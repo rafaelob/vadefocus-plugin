@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace.json",
+  "name": "vadefocus",
+  "owner": {
+    "name": "VadeFocus",
+    "email": "contato@vadefocus.com.br"
+  },
+  "metadata": {
+    "description": "Marketplace VadeFocus — jurisprudência, doutrina e legislação brasileira via MCP remoto.",
+    "pluginRoot": "./plugins"
+  },
+  "plugins": [
+    {
+      "name": "vadefocus-juris",
+      "source": "./plugins/vadefocus-juris",
+      "displayName": "VadeFocus — Jurisprudência, Doutrina & Legislação BR",
+      "description": "Quatro skills (jurisprudência, doutrina, legislação federal e legislação estadual ao vivo) + acesso ao MCP remoto VadeFocus (jurisprudência STF/STJ/TST/TCU/TJs/TRFs/TRTs, doutrina de autores, legislação federal e legislação estadual). Instale uma coisa: ganha as skills e o servidor MCP configurado, autenticado pela sua chave ik_*.",
+      "version": "1.0.0",
+      "author": { "name": "VadeFocus", "email": "contato@vadefocus.com.br" },
+      "homepage": "https://vadefocus.com.br",
+      "license": "LicenseRef-Proprietary",
+      "keywords": ["jurisprudencia", "doutrina", "legislacao", "direito", "brasil", "stf", "stj", "mcp"]
+    }
+  ]
+}
