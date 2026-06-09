@@ -1,7 +1,7 @@
 ---
 name: consultar-doutrina
 description: Consulta e cita DOUTRINA jurídica brasileira real (livros, manuais e tratados de autores) pelo MCP VadeFocus, com a referência bibliográfica ABNT da obra. Acione sempre que o usuário quiser o ensinamento doutrinário — o que a DOUTRINA/um DOUTRINADOR/AUTOR ensina ou defende sobre um instituto ou conceito, "o que Hely Lopes/Pacelli/a doutrina diz sobre X", "qual livro trata de Y", citar um livro/manual/tratado, ou a referência bibliográfica/ABNT de uma obra do acervo — em vez de um precedente judicial ou o texto de uma norma. NÃO use para precedentes/acórdãos/súmulas (skill pesquisar-jurisprudencia) nem para o texto de leis (skill consultar-legislacao).
-allowed-tools: mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida
+allowed-tools: mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa
 ---
 
 # Consultar doutrina jurídica brasileira (VadeFocus)
@@ -39,10 +39,23 @@ parâmetro de família equivalente da tool) para não misturar acórdãos/leis n
 | Forma literal / nº de artigo citado no livro ("art. 1.228", "Súmula 7") | `buscar_regex` | Regex POSIX; **exija ≥3 caracteres literais** (âncora do índice). |
 | "Toda a doutrina de um ramo" ("livros de Direito Penal") | `buscar_por_ontologia` | Subárvore ltree por `l1_code` TPU; combine com `family="doutrina"`. Ex.: `l1_code=287` (Penal), `899` (Civil), `9985` (Administrativo). |
 
+Exemplo real de chamada (o parâmetro de texto chama-se **`consulta`** — nunca `termo`/
+`query`; nome errado volta como o erro genérico *"erro interno ao processar a
+consulta"*, então ao ver essa mensagem confira primeiro os nomes dos argumentos):
+
+```json
+buscar_semantica {"consulta": "função social da posse", "family": "doutrina", "space": "premium", "k": 10}
+buscar_fts       {"consulta": "tipicidade conglobante", "family": "doutrina", "k": 5}
+```
+
 Notas de uso:
 - **Filtro de órgão NÃO se aplica à doutrina** (livro não tem tribunal). Use o filtro de
   **família** (`family="doutrina"`); `buscar_por_ontologia`/`buscar_fts`/`buscar_regex`
   filtram por família/`l1_code`, não por `tribunal`.
+- **Trecho completo:** os hits trazem `snippet` (recorte). Quando o registro expuser
+  `unit_id`, use `obter_unidade_completa(unit_id=…, family="doutrina")` para o texto da
+  seção (sujeito ao teto de direitos autorais). Se o hit só trouxer `entity_id`, **não**
+  chame a tool com ele (não resolve) — cite pelo snippet + referência.
 - `buscar_semantica`/`buscar_hibrida` aceitam `space` (`premium` = gemini-2 hierárquico,
   o tier da doutrina) e `k` (1-100). Prefira `premium` para doutrina — o embedding é
   hierárquico (seção + breadcrumb), pensado para texto de manual.
@@ -92,5 +105,10 @@ ter um ramo único e aparecem sem classificação L1, honestamente, em vez de um
 - Preserve diacríticos e UTF-8 exatamente como na fonte.
 - A chave `ik_*` é injetada pelo cliente MCP no header `Authorization: Bearer`
   (Claude Code: `userConfig`/keychain; Cowork: `managedMcpServers`; Codex:
-  `bearer_token_env_var`). Se uma tool responder 401, avise o usuário para revisar a
-  chave configurada — nunca cole a chave em chat nem em commit.
+  `bearer_token_env_var`). **Em 401, repita UMA vez** (o primeiro acesso após
+  cold-start pode falhar transitoriamente); só se persistir avise o usuário para
+  revisar a chave configurada — nunca cole a chave em chat nem em commit.
+- **Respostas grandes:** o plugin aceita o `userConfig` opcional `max_output_kb`
+  (header `X-Iajus-Max-Output-Kb`, 16-8192 KB) que fixa o orçamento de resposta por
+  chamada no servidor; acima dele a resposta vem truncada com aviso explícito. No
+  Claude Code o corte local é `MAX_MCP_OUTPUT_TOKENS`.

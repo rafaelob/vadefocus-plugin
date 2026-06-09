@@ -1,45 +1,58 @@
 ---
 name: consultar-legislacao-estadual
-description: Consulta legislação ESTADUAL brasileira ao vivo (SP, MG, BA com texto integral; DF resolve+ementa; RJ best-effort) — leis, decretos e normas das assembleias/diários oficiais estaduais — pelo MCP iaJus, com busca em tempo real na fonte oficial de cada UF. Acione sempre que o usuário pedir uma lei/decreto/norma de um ESTADO específico, o texto íntegra de uma lei estadual, "lei estadual nº Y de SP", "decreto do RJ número Z", "lei complementar do DF". A consulta é por UF + tipo + número + ano (a fonte oficial é a verdade — nunca cite de memória). NÃO use para legislação FEDERAL (skill consultar-legislacao), precedentes/acórdãos (skill pesquisar-jurisprudencia) nem doutrina de autor (skill consultar-doutrina).
-allowed-tools: mcp__iajus__consultar_legislacao_estadual, mcp__plugin_vadefocus-juris_iajus__consultar_legislacao_estadual, mcp__iajus__obter_texto_legislacao_estadual, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao_estadual, mcp__iajus__legislacao_estadual_status, mcp__plugin_vadefocus-juris_iajus__legislacao_estadual_status
+description: Consulta legislação ESTADUAL (RJ e MG) e MUNICIPAL (Rio de Janeiro e Belo Horizonte) ao vivo pelo MCP VadeFocus — leis, decretos e normas das assembleias/câmaras, na fonte oficial. Acione sempre que o usuário pedir uma lei/decreto/norma de ESTADO ou MUNICÍPIO do escopo, o texto íntegra de uma lei estadual/municipal, "lei estadual nº Y de MG", "lei municipal de BH número Z". A consulta é por UF (ou município) + tipo + número + ano (a fonte oficial é a verdade — nunca cite de memória). NÃO use para legislação FEDERAL (skill consultar-legislacao), precedentes/acórdãos (skill pesquisar-jurisprudencia) nem doutrina de autor (skill consultar-doutrina).
+allowed-tools: mcp__iajus__consultar_legislacao_estadual, mcp__plugin_vadefocus-juris_iajus__consultar_legislacao_estadual, mcp__iajus__obter_texto_legislacao_estadual, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao_estadual, mcp__iajus__legislacao_estadual_status, mcp__plugin_vadefocus-juris_iajus__legislacao_estadual_status, mcp__iajus__consultar_legislacao_municipal, mcp__plugin_vadefocus-juris_iajus__consultar_legislacao_municipal, mcp__iajus__obter_texto_legislacao_municipal, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao_municipal, mcp__iajus__legislacao_municipal_status, mcp__plugin_vadefocus-juris_iajus__legislacao_municipal_status
 ---
 
-# Consultar legislação estadual brasileira ao vivo (iaJus)
+# Consultar legislação estadual e municipal ao vivo (VadeFocus)
 
-Você tem acesso ao servidor MCP `iajus`, que consulta **legislação estadual**
-brasileira **ao vivo** na fonte oficial de cada UF (assembleia legislativa /
-diário oficial estadual). A consulta é em tempo real — use o MCP em vez de citar de
-memória: **o texto da fonte oficial é a verdade**.
+Você tem acesso ao servidor MCP VadeFocus, que consulta **legislação estadual e
+municipal** ao vivo na fonte oficial (assembleia legislativa / câmara municipal /
+diário oficial). A consulta é em tempo real — use o MCP em vez de citar de memória:
+**o texto da fonte oficial é a verdade**.
 
 Estas tools vivem no **mesmo** servidor MCP `iajus` das demais skills — mesma URL,
 mesma chave `ik_*`. Não há credencial nem host novos.
 
-## Cobertura por UF (prontidão real)
+## Escopo do plano VadeFocus (importante — verificado ao vivo)
 
-Antes de consultar uma UF nova, você pode chamar `legislacao_estadual_status` para
-ver a prontidão. Estado atual:
+O serviço VadeFocus cobre **exatamente**:
 
-- **Prontas** (`ready` — verificadas ao vivo: fetch 2xx + texto integral real):
-  **SP** (ALESP), **MG** (ALMG API v2 — uma chamada já traz ementa + texto integral) e
-  **BA** (LegislaBahia — ementa + texto integral).
-- **Resolve + ementa** (`resolve_ementa`): **DF** (CLDF PLE API — resolve a norma + ementa
-  + link oficial de forma confiável; o inteiro teor vem via SINJ-DF na maioria dos casos,
-  mas é best-effort — o campo `tem_texto_integral` por consulta avisa se o texto veio).
-- **Não confirmada** (`unconfirmed` — adaptador existe, mas a resolução ao vivo ainda não
-  foi confirmada): **CE, PE, RN, RO** — pode resolver ou não; sempre confira com
-  `legislacao_estadual_status` e, se falhar, **diga que a UF ainda não está confirmada**.
-- **Best-effort** (`stub`): **RJ** (a base da ALERJ é Lotus Notes/Domino com busca
-  full-text imprecisa — a maioria das consultas por número NÃO resolve; quando resolve,
-  o texto vem completo e o número é verificado no cabeçalho do documento). Se não
-  resolver, **diga que a norma do RJ não pôde ser localizada na fonte** — nunca invente.
-- **Federado** (`federated`): UFs sem adaptador nativo → tentativa via índice LexML
-  federado (só link, sem texto; pode não resolver). Se não resolver, **diga honestamente**
-  que a UF ainda não tem cobertura nativa — não improvise a norma.
+- **Estadual:** **RJ** e **MG**. Qualquer outra UF (SP, BA, DF, …) é **recusada pelo
+  plano** — a resposta vem como erro/negativa, NÃO como "norma não existe". Diga ao
+  usuário que a UF está fora da cobertura do plano VadeFocus (hoje a recusa pode
+  chegar como um erro técnico curto; trate-a como fora de escopo, nunca como
+  indisponibilidade temporária nem como inexistência da norma).
+- **Municipal:** **Rio de Janeiro** e **Belo Horizonte** (aliases aceitos: "RJ",
+  "Rio", "BH"). Outros municípios são recusados da mesma forma.
 
-> Regra REAL: nunca afirme que uma norma existe se a tool não a retornou. `ready` = só as
-> UFs com prova ao vivo de texto integral (hoje SP, MG, BA). Para `resolve_ementa`
-> (DF), `unconfirmed`, `stub` (RJ) e `federated`, modere a expectativa e seja honesto sobre
-> lacunas — a cobertura ao vivo de legislação estadual ainda está em expansão.
+Prontidão real por fonte (chame `legislacao_estadual_status` /
+`legislacao_municipal_status` na dúvida):
+
+- **MG (ALMG)** — `ready`, verificada ao vivo: uma chamada já traz ementa + texto
+  integral. Exemplo real que funciona:
+  ```json
+  consultar_legislacao_estadual {"uf": "MG", "tipo": "LEI", "numero": "14184", "ano": 2002}
+  obter_texto_legislacao_estadual {"uf": "MG", "tipo": "LEI", "numero": "14184", "ano": 2002}
+  ```
+  (metadados + link oficial ALMG; o texto integral veio com ~25 KB em markdown.)
+- **RJ (ALERJ)** — best-effort (`stub`): a base é Lotus Notes/Domino com busca
+  imprecisa — a maioria das consultas por número NÃO resolve; quando resolve, o texto
+  vem completo e verificado. Se não resolver, **diga que a norma do RJ não pôde ser
+  localizada na fonte** — nunca invente.
+- **Belo Horizonte (CMBH)** — `ready` para resolução. Exemplo real:
+  ```json
+  consultar_legislacao_municipal {"municipio": "Belo Horizonte", "tipo": "LEI", "numero": "8616", "ano": 2003}
+  ```
+  → ementa ("Código de Posturas…") + `link_completo` oficial. **Atenção:** o texto
+  integral nem sempre é extraível (`tem_texto_integral: false` /
+  `aviso: "…texto integral não pode ser extraído…"`) — nesse caso entregue o
+  `link_completo` ao usuário e diga que o inteiro teor está no link.
+- **Rio de Janeiro (CMRJ)** — resolve norma + ementa de forma confiável; inteiro
+  teor best-effort.
+
+> Regra REAL: nunca afirme que uma norma existe se a tool não a retornou; e nunca
+> afirme que "não existe" quando a resposta foi recusa de escopo ou falha da fonte.
 
 ## Quando NÃO usar esta skill
 
@@ -49,43 +62,51 @@ ver a prontidão. Estado atual:
 
 ## Como consultar
 
-A **UF é obrigatória** em toda consulta (legislação estadual é por estado), junto com
-**tipo + número + ano** (a consulta resolve a norma por identidade, não por busca
-textual livre).
+A identidade da norma é obrigatória: **UF (ou município) + tipo + número + ano**
+(a consulta resolve por identidade, não por busca textual livre).
 
 | Necessidade | Tool | Argumentos |
 |---|---|---|
-| Metadados de uma norma (link oficial, ementa, data) | `consultar_legislacao_estadual` | `uf`, `tipo`, `numero`, `ano` |
-| Texto íntegra (markdown hierárquico) de uma norma | `obter_texto_legislacao_estadual` | `uf`, `tipo`, `numero`, `ano` |
-| Saber a prontidão da cobertura por UF | `legislacao_estadual_status` | (sem argumentos) |
+| Metadados de norma estadual (link, ementa, data) | `consultar_legislacao_estadual` | `uf`, `tipo`, `numero`, `ano` |
+| Texto íntegra estadual (markdown hierárquico) | `obter_texto_legislacao_estadual` | `uf`, `tipo`, `numero`, `ano` |
+| Metadados de norma municipal | `consultar_legislacao_municipal` | `municipio`, `tipo`, `numero`, `ano` |
+| Texto íntegra municipal | `obter_texto_legislacao_municipal` | `municipio`, `tipo`, `numero`, `ano` |
+| Prontidão da cobertura | `legislacao_estadual_status` / `legislacao_municipal_status` | (sem argumentos) |
 
 Notas de uso:
-- **`uf` é sempre obrigatória.** Sem UF a consulta é ambígua — peça a UF ao usuário
-  antes de chamar a tool (leis de mesmo número existem em estados diferentes).
+- **`uf`/`municipio` é sempre obrigatória.** Sem ela a consulta é ambígua — peça ao
+  usuário antes de chamar a tool (leis de mesmo número existem em entes diferentes).
 - `tipo` é a espécie normativa (`LEI`, `DECRETO`, `LEI COMPLEMENTAR`, …); `numero` e
-  `ano` identificam a norma. Esta consulta **não** faz busca por tema/assunto — se o
-  usuário só descreve o assunto, peça (ou ajude a descobrir) tipo/número/ano.
-- A consulta é **ao vivo**: pode ser mais lenta e depende da fonte oficial. Se a fonte
-  estiver fora do ar ou não retornar a norma, o campo `erro`/`aviso` diz isso —
+  `ano` identificam a norma. Esta consulta **não** faz busca por tema — se o usuário
+  só descreve o assunto, peça (ou ajude a descobrir) tipo/número/ano.
+- Todos os 4 argumentos são obrigatórios; chamada com argumento faltando volta como o
+  erro genérico *"erro interno ao processar a consulta"* — ao ver essa mensagem,
+  confira primeiro se passou `uf`/`municipio`, `tipo`, `numero` e `ano` com esses
+  nomes exatos.
+- A consulta é **ao vivo**: pode ser mais lenta e depende da fonte oficial. Se a
+  fonte estiver fora do ar ou não retornar a norma, o campo `erro`/`aviso` diz isso —
   **repasse ao usuário**, não invente.
 
 ## Regras de citação (obrigatório)
 
-- Cite a **UF**, o tipo, o número/ano e a redação como retornada pela fonte. Sempre
-  inclua o **`link_completo`** (URL oficial deep-per-norma) e **nunca invente** número,
-  redação ou link.
-- Deixe claro que a fonte é **estadual** e de **qual UF**.
+- Cite o **ente** (UF ou município), o tipo, o número/ano e a redação como retornada
+  pela fonte. Sempre inclua o **`link_completo`** (URL oficial deep-per-norma) e
+  **nunca invente** número, redação ou link.
+- Deixe claro que a fonte é **estadual/municipal** e de **qual ente**.
 - Preserve grafia e diacríticos exatamente como na fonte (UTF-8).
-- Se a norma não for encontrada (ou a UF for federada/best-effort e falhar), **diga
-  isso** — legislação estadual ao vivo tem lacunas de cobertura conhecidas.
+- Se a norma não for encontrada, **diga isso** — cobertura ao vivo tem lacunas
+  conhecidas (especialmente RJ estadual).
 
 ## Boas práticas
 
-- Para uma UF que você não sabe se está coberta, chame `legislacao_estadual_status`
-  primeiro e ajuste a expectativa (ready vs best-effort vs federated).
-- Use `consultar_legislacao_estadual` para confirmar a norma + pegar o link e a data;
-  só então `obter_texto_legislacao_estadual` se o usuário quiser o inteiro teor.
+- Use `consultar_*` para confirmar a norma + pegar link e data; só então
+  `obter_texto_*` se o usuário quiser o inteiro teor.
+- **Texto integral grande** (norma extensa): o plugin aceita o `userConfig` opcional
+  `max_output_kb` (header `X-Iajus-Max-Output-Kb`, 16-8192 KB) que fixa o orçamento
+  de resposta por chamada; acima dele a resposta vem truncada com aviso explícito. No
+  Claude Code o corte local é `MAX_MCP_OUTPUT_TOKENS`.
 - A chave `ik_*` é injetada pelo cliente MCP no header `Authorization: Bearer`
   (Claude Code: `userConfig`/keychain; Cowork: `managedMcpServers`; Codex:
-  `bearer_token_env_var`). Se uma tool responder 401, avise o usuário para revisar a
-  chave — nunca cole a chave em chat nem em commit.
+  `bearer_token_env_var`). **Em 401, repita UMA vez** (cold-start transitório); só
+  se persistir avise o usuário para revisar a chave — nunca cole a chave em chat nem
+  em commit.

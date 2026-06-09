@@ -54,7 +54,7 @@ repositório do marketplace (que só tem manifesto, **zero segredo**).
 ## Instalar
 
 ```text
-/plugin marketplace add rafaelob/vadefocus-plugin    # repo público do marketplace (cliente)
+/plugin marketplace add vadefocus/vadefocus-plugin   # repo público do marketplace (cliente)
 /plugin install vadefocus-juris@vadefocus
 /plugin enable vadefocus-juris@vadefocus              # aqui o Claude pede sua chave ik_* (guardada no keychain)
 /reload-plugins                                       # conecta o servidor MCP com a chave
@@ -66,8 +66,17 @@ endpoint, preencha o campo opcional **VadeFocus MCP URL** (`user_config.mcp_url`
 branco, usa o padrão de produção (serviço dedicado VadeFocus, perfil curado):
 
 ```
-https://iajus-mcp-vadefocus-tolxpgkbla-rj.a.run.app/mcp
+https://vadefocus-mcp.iajus.com.br/mcp
 ```
+
+### Respostas maiores (opcional — `max_output_kb`)
+
+O campo opcional **`max_output_kb`** define o orçamento de tamanho da resposta de
+cada ferramenta (header `X-Iajus-Max-Output-Kb`, aceito entre **16 e 8192 KB**; acima
+do orçamento o servidor trunca com aviso explícito). Em branco (padrão), vale o
+default do deploy (`IAJUS_MAX_TOOL_OUTPUT_KB`; `0` = sem limite servidor-side). Para
+textos integrais de lei/ementas longas no Claude Code, lembre que o corte mais comum
+é **do cliente**: aumente também a env `MAX_MCP_OUTPUT_TOKENS`.
 
 > **Plano de distribuição.** O marketplace voltado ao **cliente** é um repositório
 > **público** (só manifesto, sem segredo) — porque um marketplace git **privado**
@@ -80,7 +89,7 @@ O Codex consome MCP via `~/.codex/config.toml`. Aponte para o mesmo endpoint com
 chave por variável de ambiente:
 
 ```bash
-codex mcp add vadefocus --url https://iajus-mcp-vadefocus-tolxpgkbla-rj.a.run.app/mcp \
+codex mcp add vadefocus --url https://vadefocus-mcp.iajus.com.br/mcp \
   --bearer-token-env-var VADEFOCUS_API_TOKEN
 export VADEFOCUS_API_TOKEN=ik_live_XXXXXXXX_....   # nunca commitar/colar em chat
 ```

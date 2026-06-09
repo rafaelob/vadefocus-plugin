@@ -1,16 +1,64 @@
 ---
 name: consultar-legislacao
 description: Consulta legislação federal brasileira real (leis, decretos, MPVs, leis complementares, emendas) e localiza dispositivos pelo MCP VadeFocus, com texto íntegra do Planalto. Acione sempre que o usuário pedir o texto de uma lei, um artigo específico, a redação vigente de um dispositivo, normas por tema/ramo do direito, ou perguntar "qual lei regula Y", "o que diz o art. X da lei Z", "esse dispositivo está em vigor" — em vez de citar de memória. Localiza por nome/termo, conceito, expressão literal ou ramo OJBU. NÃO use para precedentes/acórdãos/súmulas (skill pesquisar-jurisprudencia) nem para doutrina de autor (skill consultar-doutrina).
-allowed-tools: mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_grafo, mcp__plugin_vadefocus-juris_iajus__buscar_grafo, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida
+allowed-tools: mcp__iajus__consultar_codigo, mcp__plugin_vadefocus-juris_iajus__consultar_codigo, mcp__iajus__obter_texto_legislacao, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao, mcp__iajus__obter_texto_legislacao_markdown, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao_markdown, mcp__iajus__consultar_legislacao_federal, mcp__plugin_vadefocus-juris_iajus__consultar_legislacao_federal, mcp__iajus__buscar_legislacao_federal, mcp__plugin_vadefocus-juris_iajus__buscar_legislacao_federal, mcp__iajus__listar_legislacao_federal, mcp__plugin_vadefocus-juris_iajus__listar_legislacao_federal, mcp__iajus__consultar_grafo_legislacao, mcp__plugin_vadefocus-juris_iajus__consultar_grafo_legislacao, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_grafo, mcp__plugin_vadefocus-juris_iajus__buscar_grafo, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida
 ---
 
 # Consultar legislação federal brasileira (VadeFocus)
 
 Você tem acesso ao servidor MCP VadeFocus para legislação federal brasileira (leis,
-decretos, MPVs, leis complementares, emendas). As mesmas modalidades de busca da
-jurisprudência cobrem a família `legislacao` — passe `family="legislacao"` para
-restringir os resultados à legislação. Use o MCP em vez de citar de memória: **o
-texto da fonte é a verdade.**
+decretos, MPVs, leis complementares, emendas), com DOIS caminhos complementares:
+as **tools dedicadas de legislação federal** (norma por identidade tipo+número+ano,
+texto do Planalto, códigos premium com hierarquia completa) e as **modalidades de
+busca** (com `family="legislacao"`). Use o MCP em vez de citar de memória: **o texto
+da fonte é a verdade.**
+
+## "O que diz o art. X?" — playbook por dispositivo (testado ao vivo)
+
+Para um artigo específico de um código/lei, na ordem:
+
+1. **`consultar_codigo`** — acervo PREMIUM curado, hierarquia completa
+   (Livro→Título→Capítulo→Seção→Artigo→§→inciso→alínea), por alias amigável:
+   ```json
+   consultar_codigo {"codigo": "CP",  "artigo": 121}     ← funciona (subtree completa)
+   consultar_codigo {"codigo": "CPP", "artigo": 492}     ← funciona
+   consultar_codigo {"codigo": "CC",  "termo": "união estável", "limit": 5}
+   ```
+2. **`obter_texto_legislacao`** — texto consolidado do Planalto, artigo isolado:
+   ```json
+   obter_texto_legislacao {"tipo": "DEL", "numero": "2848", "ano": 1940, "artigo": 61}
+   ```
+   (retorna a redação CONSOLIDADA, com os marcadores "Redação dada pela Lei…";
+   `artigo_fim` para faixa inclusiva.)
+3. Se (1) e (2) falharem, **`obter_texto_legislacao_markdown`** (norma inteira em
+   markdown hierárquico — ex.: LGPD ≈ 63 KB) e localize o artigo no texto.
+
+Identidades canônicas: CP = `DEL 2848/1940`, CPP = `DEL 3689/1941`, CC = `LEI
+10406/2002`, CPC = `LEI 13105/2015`, CDC = `LEI 8078/1990`, CLT = `DEL 5452/1943`,
+LGPD = `LEI 13709/2018`. Tipos aceitos: `LEI`, `DEL` (decreto-lei), `DEC`, `MPV`,
+`LCP` (lei complementar), `EMC` (emenda constitucional).
+
+Armadilhas REAIS (vividas em teste ao vivo — seja honesto quando ocorrerem):
+- `obter_texto_legislacao` pode responder `{"erro": "artigo nao encontrado no texto"}`
+  para artigos que existem (ex. vivido: CPP art. 492) — a extração do artigo no texto
+  do Planalto falha em alguns diplomas. **Caia para `consultar_codigo`** (que resolveu
+  o CPP 492) ou para o markdown integral.
+- **Artigos com milhar por número** (ex.: CC arts. 1.082, 1.723) hoje retornam
+  `total: 0` tanto em `consultar_codigo {"codigo": "CC", "artigo": "1.723"}` quanto no
+  Planalto por `artigo=1723` (defeito conhecido de numeração em consolidação). Caminho
+  que funciona: `consultar_codigo` com **`termo=`** (FTS dentro do código, ex.
+  `termo="união estável"`) — e diga ao usuário qual caminho usou. Nunca apresente
+  `total: 0` como "o artigo não existe".
+
+## Norma inteira, metadados e vigência
+
+| Necessidade | Tool | Como |
+|---|---|---|
+| Metadados + resumo de alterações ("a LGPD foi alterada?") | `consultar_legislacao_federal` | `{"tipo": "LEI", "numero": "13709", "ano": 2018}` → ementa, apelidos, publicações DOU, `total_alteracoes` + resumo. |
+| Texto integral em markdown hierárquico | `obter_texto_legislacao_markdown` | `{"tipo": "LEI", "numero": "13709", "ano": 2018}`. Normas longas: ver nota de tamanho abaixo. |
+| Achar a norma pelo tema da ementa | `buscar_legislacao_federal` | `{"termo": "proteção de dados pessoais", "limite": 5}`. |
+| "Quais leis saíram em 2024?" | `listar_legislacao_federal` | `{"tipo": "LEI", "ano": 2024, "limite": 20}`. |
+| Cadeia de alterações / conversão MPV→LEI | `consultar_grafo_legislacao` | `{"norma_ref": "LEI 8078/1990", "max_depth": 1}`. Pode vir vazia para normas ainda não projetadas no grafo — diga isso, não conclua "nunca alterada". |
 
 ## Como consultar (modalidades, com `family="legislacao"`)
 
@@ -44,11 +92,23 @@ deep-link canônico em `link_completo` (`url_oficial`). Filtros comuns: `family`
 
 ## Boas práticas
 
-- Comece pelo `buscar_fts` com `family="legislacao"` e o nome/termo da norma;
-  refine com `unit_kind="artigo"` para isolar dispositivos.
-- Para "qual lei regula X" sem saber o nome, use `buscar_semantica` ou
-  `buscar_por_ontologia` pelo ramo do direito.
+- Artigo/dispositivo conhecido → playbook do topo (`consultar_codigo` →
+  `obter_texto_legislacao`). Tema sem norma conhecida → `buscar_fts` com
+  `family="legislacao"` (refine com `unit_kind="artigo"`), `buscar_semantica` ou
+  `buscar_por_ontologia` pelo ramo.
+- **O parâmetro de texto das modalidades chama-se `consulta`** (e `padrao` no regex).
+  Nome errado de argumento volta como o erro genérico *"erro interno ao processar a
+  consulta"* — ao ver essa mensagem, confira primeiro os nomes dos argumentos.
+- As modalidades `buscar_fts`/`buscar_regex` aceitam paginação keyset (`page_size`,
+  `cursor` → `page_info.next_cursor`); se o servidor recusar o `cursor` (versão
+  anterior), repita sem os parâmetros de paginação.
+- **Tamanho de resposta:** normas inteiras em markdown podem ser grandes (LGPD ≈
+  63 KB; códigos muito maiores). O plugin aceita o `userConfig` opcional
+  `max_output_kb` (header `X-Iajus-Max-Output-Kb`, 16-8192 KB) que fixa o orçamento
+  por chamada no servidor — acima dele a resposta vem truncada com aviso explícito.
+  No Claude Code o corte local é `MAX_MCP_OUTPUT_TOKENS`; para citar um artigo,
+  prefira `artigo=` / `consultar_codigo` em vez do diploma inteiro.
 - A chave `ik_*` é injetada pelo cliente MCP no header `Authorization: Bearer`
   (Claude Code: `userConfig`/keychain; Cowork: `managedMcpServers`; Codex:
-  `bearer_token_env_var`); um 401 indica chave ausente/inválida — peça para revisar
-  a chave configurada, nunca cole a chave em chat.
+  `bearer_token_env_var`). **Em 401, repita UMA vez** (cold-start transitório); só
+  então peça para revisar a chave configurada — nunca cole a chave em chat.

@@ -4,7 +4,8 @@
       "type": "http",
       "url": "${user_config.mcp_url}",
       "headers": {
-        "Authorization": "Bearer ${user_config.api_token}"
+        "Authorization": "Bearer ${user_config.api_token}",
+        "X-Iajus-Max-Output-Kb": "${user_config.max_output_kb}"
       }
     }
   }

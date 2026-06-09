@@ -2,11 +2,11 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "vadefocus-juris",
   "displayName": "VadeFocus — Jurisprudência, Doutrina & Legislação BR",
-  "description": "Acesso ao MCP remoto VadeFocus (jurisprudência brasileira STF/STJ/TST/TCU/TJs/TRFs/TRTs, doutrina de autores, legislação federal e legislação estadual ao vivo) mais quatro skills — jurisprudência, doutrina, legislação federal e legislação estadual — que ensinam o agente a pesquisar, citar e classificar pelas 7 modalidades de busca (semântica, regex, FTS, ontologia OJBU, CNJ, grafo de citações e híbrida). Instale uma coisa e ganhe as skills + o servidor MCP já configurado.",
+  "description": "Acesso ao MCP remoto VadeFocus (jurisprudência brasileira STF/STJ/TSE/TRF1-6/TREs/TJ-RJ/TJ-MG, doutrina de autores, legislação federal e legislação estadual RJ/MG + municipal Rio/BH ao vivo) mais quatro skills — jurisprudência, doutrina, legislação federal e legislação estadual/municipal — que ensinam o agente a pesquisar, citar e classificar pelas 7 modalidades de busca (semântica, regex, FTS, ontologia OJBU, CNJ, grafo de citações e híbrida). Instale uma coisa e ganhe as skills + o servidor MCP já configurado.",
   "version": "1.0.0",
   "author": { "name": "VadeFocus", "email": "contato@vadefocus.com.br" },
   "homepage": "https://vadefocus.com.br",
-  "repository": "https://github.com/rafaelob/vadefocus-plugin",
+  "repository": "https://github.com/vadefocus/vadefocus-plugin",
   "license": "LicenseRef-Proprietary",
   "keywords": ["jurisprudencia", "doutrina", "legislacao", "direito", "brasil", "stf", "stj", "tst", "tcu", "mcp"],
   "userConfig": {
@@ -21,7 +21,13 @@
       "type": "string",
       "title": "VadeFocus MCP URL (opcional)",
       "description": "Endpoint do MCP remoto VadeFocus (serviço dedicado com o perfil curado VadeFocus). Deixe em branco para usar o padrão de produção (Cloud Run, southamerica-east1).",
-      "default": "https://iajus-mcp-vadefocus-tolxpgkbla-rj.a.run.app/mcp"
+      "default": "https://vadefocus-mcp.iajus.com.br/mcp"
+    },
+    "max_output_kb": {
+      "type": "string",
+      "title": "Tamanho máximo de resposta por consulta, em KB (opcional)",
+      "description": "Orçamento de tamanho da resposta de cada ferramenta, em KB (header X-Iajus-Max-Output-Kb). Vazio = padrão do servidor (sem limite servidor-side). Um número (ex.: 2048) fixa o orçamento desta instalação — aceito entre 16 e 8192 KB; acima do orçamento a resposta vem truncada com aviso explícito. Dica: o corte mais comum é do PRÓPRIO cliente — no Claude Code, aumente também a env MAX_MCP_OUTPUT_TOKENS para respostas longas (textos integrais de lei).",
+      "default": ""
     }
   },
   "defaultEnabled": false
