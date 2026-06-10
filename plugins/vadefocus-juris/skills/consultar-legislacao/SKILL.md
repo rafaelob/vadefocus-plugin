@@ -1,7 +1,7 @@
 ---
 name: consultar-legislacao
 description: Consulta legislação federal brasileira real (leis, decretos, MPVs, leis complementares, emendas) e localiza dispositivos pelo MCP VadeFocus, com texto íntegra do Planalto. Acione sempre que o usuário pedir o texto de uma lei, um artigo específico, a redação vigente de um dispositivo, normas por tema/ramo do direito, ou perguntar "qual lei regula Y", "o que diz o art. X da lei Z", "esse dispositivo está em vigor" — em vez de citar de memória. Localiza por nome/termo, conceito, expressão literal ou ramo OJBU. NÃO use para precedentes/acórdãos/súmulas (skill pesquisar-jurisprudencia) nem para doutrina de autor (skill consultar-doutrina).
-allowed-tools: mcp__iajus__consultar_codigo, mcp__plugin_vadefocus-juris_iajus__consultar_codigo, mcp__iajus__obter_texto_legislacao, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao, mcp__iajus__obter_texto_legislacao_markdown, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao_markdown, mcp__iajus__consultar_legislacao_federal, mcp__plugin_vadefocus-juris_iajus__consultar_legislacao_federal, mcp__iajus__buscar_legislacao_federal, mcp__plugin_vadefocus-juris_iajus__buscar_legislacao_federal, mcp__iajus__listar_legislacao_federal, mcp__plugin_vadefocus-juris_iajus__listar_legislacao_federal, mcp__iajus__consultar_grafo_legislacao, mcp__plugin_vadefocus-juris_iajus__consultar_grafo_legislacao, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_grafo, mcp__plugin_vadefocus-juris_iajus__buscar_grafo, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida
+allowed-tools: mcp__iajus__consultar_codigo, mcp__plugin_vadefocus-juris_iajus__consultar_codigo, mcp__iajus__obter_texto_legislacao, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao, mcp__iajus__obter_texto_legislacao_markdown, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao_markdown, mcp__iajus__consultar_legislacao_federal, mcp__plugin_vadefocus-juris_iajus__consultar_legislacao_federal, mcp__iajus__buscar_legislacao_federal, mcp__plugin_vadefocus-juris_iajus__buscar_legislacao_federal, mcp__iajus__listar_legislacao_federal, mcp__plugin_vadefocus-juris_iajus__listar_legislacao_federal, mcp__iajus__consultar_grafo_legislacao, mcp__plugin_vadefocus-juris_iajus__consultar_grafo_legislacao, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida
 ---
 
 # Consultar legislação federal brasileira (VadeFocus)
@@ -43,12 +43,11 @@ Armadilhas REAIS (vividas em teste ao vivo — seja honesto quando ocorrerem):
   para artigos que existem (ex. vivido: CPP art. 492) — a extração do artigo no texto
   do Planalto falha em alguns diplomas. **Caia para `consultar_codigo`** (que resolveu
   o CPP 492) ou para o markdown integral.
-- **Artigos com milhar por número** (ex.: CC arts. 1.082, 1.723) hoje retornam
-  `total: 0` tanto em `consultar_codigo {"codigo": "CC", "artigo": "1.723"}` quanto no
-  Planalto por `artigo=1723` (defeito conhecido de numeração em consolidação). Caminho
-  que funciona: `consultar_codigo` com **`termo=`** (FTS dentro do código, ex.
-  `termo="união estável"`) — e diga ao usuário qual caminho usou. Nunca apresente
-  `total: 0` como "o artigo não existe".
+- **Artigos com milhar** (ex.: CC arts. 1.000, 1.723, 2.044) funcionam por número —
+  `consultar_codigo {"codigo": "CC", "artigo": "1.723"}` e `{"artigo": 1723}` retornam
+  o dispositivo. Se ainda assim vier `total: 0`, use `consultar_codigo` com **`termo=`**
+  (FTS dentro do código, ex. `termo="união estável"`) e diga qual caminho usou. Nunca
+  apresente `total: 0` como "o artigo não existe".
 
 ## Norma inteira, metadados e vigência
 
@@ -68,7 +67,6 @@ Armadilhas REAIS (vividas em teste ao vivo — seja honesto quando ocorrerem):
 | Buscar por conceito/intenção quando o usuário não sabe a redação | `buscar_semantica` | `consulta=<descrição>`, `space=…`. Vetorial. |
 | Citação ou redação literal ("art. 5º", "§ 2º do art. 18") | `buscar_regex` | Padrão POSIX com **≥3 caracteres literais** (âncora do índice). |
 | "Quais leis tratam de um ramo do direito" | `buscar_por_ontologia` | `l1_code` TPU (ou L2/L3), `family="legislacao"`. Subárvore OJBU. Ex.: `l1_code=1156` (Consumidor → CDC), `14` (Tributário), `899` (Civil → CC). |
-| Normas que se citam/alteram entre si | `buscar_grafo` | `normalized_ref`/`entity_id`; tipos incluem `cita_legislacao`, `altera_norma`. |
 | Melhor resultado geral | `buscar_hibrida` | Funde os sinais via RRF. |
 
 Cada resultado de legislação traz a estrutura da norma em `family_meta`
@@ -97,8 +95,9 @@ deep-link canônico em `link_completo` (`url_oficial`). Filtros comuns: `family`
   `family="legislacao"` (refine com `unit_kind="artigo"`), `buscar_semantica` ou
   `buscar_por_ontologia` pelo ramo.
 - **O parâmetro de texto das modalidades chama-se `consulta`** (e `padrao` no regex).
-  Nome errado de argumento volta como o erro genérico *"erro interno ao processar a
-  consulta"* — ao ver essa mensagem, confira primeiro os nomes dos argumentos.
+  Nome errado de argumento volta com mensagem ACIONÁVEL ("argumento desconhecido:
+  'termo' — confira os argumentos aceitos") — corrija o nome e repita; não é
+  indisponibilidade do serviço.
 - As modalidades `buscar_fts`/`buscar_regex` aceitam paginação keyset (`page_size`,
   `cursor` → `page_info.next_cursor`); se o servidor recusar o `cursor` (versão
   anterior), repita sem os parâmetros de paginação.

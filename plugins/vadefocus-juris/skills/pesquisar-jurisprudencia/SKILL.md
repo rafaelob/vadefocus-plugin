@@ -1,143 +1,154 @@
 ---
 name: pesquisar-jurisprudencia
-description: Pesquisa e cita jurisprudência brasileira real (STF, STJ, TSE, TREs, TRFs, TJ-RJ, TJ-MG) pelo MCP VadeFocus, com as 7 modalidades de busca (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, grafo de citações). Acione sempre que o usuário pedir precedente, acórdão, súmula, repercussão geral, número de processo CNJ ou o grafo de citações de uma súmula/tema — ou perguntar "o que os tribunais decidiram sobre X", "tem precedente sobre Y", "qual o entendimento atual" — em vez de responder de memória. NÃO use para doutrina de autor (skill consultar-doutrina) nem para o texto de leis (skill consultar-legislacao).
-allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_vadefocus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_grafo, mcp__plugin_vadefocus-juris_iajus__buscar_grafo, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa
+description: Pesquisa jurisprudência brasileira real no MCP VadeFocus (STF, STJ, TSE, TREs, TRFs, TJ-RJ, TJ-MG) — busca semântica/híbrida/full-text/regex, número de processo CNJ, ramo OJBU, consulta estruturada de súmula/súmula vinculante/tema/OJ por número e informativos STF/STJ. Use sempre que o usuário pedir precedente, acórdão, súmula, tema de repercussão geral, entendimento de tribunal ou informativo — nunca responda jurisprudência de memória. Não use para doutrina de autor (consultar-doutrina) nem texto de lei (consultar-legislacao).
+allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_vadefocus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__consultar_qualificada, mcp__plugin_vadefocus-juris_iajus__consultar_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_vadefocus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_vadefocus-juris_iajus__consultar_informativos_stj, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa
 ---
 
-# Pesquisar jurisprudência brasileira (VadeFocus)
+# Pesquisar jurisprudência brasileira
 
-Você tem acesso ao servidor MCP VadeFocus, que indexa jurisprudência brasileira dos
-órgãos do escopo VadeFocus — **STF, STJ, TSE, os 6 TRFs, os 27 TREs, TJ-RJ e TJ-MG**
-(acórdãos colegiados 2013-2026 — TREs 2016-2026 —, súmulas, precedentes qualificados,
-repercussão geral) com classificação alinhada ao CNJ/TPU (ontologia OJBU: 21 ramos L1
-→ sub-áreas L2/L3). Consultas a outros órgãos (TST, TRTs, TCU, demais TJs, STM…) ficam
-fora do escopo e retornam vazio. **Use o MCP em vez de inventar precedentes.**
+## Escopo
 
-## Escolha da modalidade (7 tools de busca)
+O servidor indexa acórdãos colegiados, súmulas, precedentes qualificados e informativos
+dos órgãos do perfil VadeFocus: **STF, STJ, TSE, TRF1-6, os 27 TREs, TJ-RJ e TJ-MG**
+(2013-2026; TREs 2016-2026), com classificação OJBU alinhada ao CNJ/TPU. Outros órgãos
+(TST, TRTs, TCU, demais TJs, STM) retornam vazio por estarem fora do perfil — informe
+isso ao usuário em vez de tentar contornar.
 
-Comece pela modalidade certa para a pergunta. Todas retornam o mesmo envelope
-uniforme (`{ modalidade, total, resultados:[…] }`) e são read-only.
+## Escolha da ferramenta
 
-| Pergunta do usuário | Tool | Por quê |
-|---|---|---|
-| Tema/conceito ("o que decidiram sobre dano moral por inscrição indevida") | `buscar_semantica` | Vetorial/densa — casa por significado, não por palavra. **Padrão para perguntas conceituais.** |
-| Quer o melhor resultado geral (relevância máxima) | `buscar_hibrida` | Funde semântica + FTS + trigram + CNJ + ontologia via RRF, com boost de classificação. |
-| Expressão exata / termo técnico literal ("usucapião extraordinária") | `buscar_fts` | Full-text pt_unaccent, stemming PT, insensível a acento; `phrase=true` exige a ordem. |
-| Padrão literal / forma de citação ("Súmula 7", "art. 1.228") | `buscar_regex` | Regex POSIX; **exija ≥3 caracteres literais** no padrão (âncora do índice). |
-| Número de processo CNJ | `buscar_por_cnj` | `numero` completo = casamento exato; ou componentes (ano, tribunal, origem). |
-| "Todos os acórdãos de um ramo do direito" | `buscar_por_ontologia` | Subárvore ltree por `l1_code` TPU (ou L2/L3, ou `tema_transversal`). Ex.: `l1_code=287` (Penal), `899` (Civil), `9985` (Administrativo). |
-| Quem citou uma súmula/tema, ou o que um acórdão cita | `buscar_grafo` | `legal_edges` single-hop; `normalized_ref="Súmula 279"` traz quem aplicou. |
+Decida pela INTENÇÃO da pergunta, nesta ordem de verificação:
 
-### Chamadas que funcionam (testadas ao vivo contra o serviço)
+1. O usuário deu o NÚMERO de uma súmula/SV/tema/OJ → `consultar_qualificada`.
+2. O usuário deu um número de processo CNJ → `buscar_por_cnj`.
+3. Pergunta conceitual/temática → `buscar_semantica`; se vier fraco, `buscar_hibrida`.
+4. Expressão técnica literal → `buscar_fts`; padrão de forma (regex) → `buscar_regex`.
+5. "Todos os acórdãos do ramo X" → `buscar_por_ontologia`.
+6. "O que saiu no informativo sobre X" → `consultar_informativos_stf` / `_stj`.
+
+## Ferramentas
+
+Todas são read-only e retornam o envelope `{modalidade, total, resultados: […]}`.
+Cada exemplo abaixo foi executado com sucesso contra o serviço em produção.
+
+### consultar_qualificada — súmula/SV/tema/OJ pelo número
+
+Lookup estruturado exato. `numero` é obrigatório; `tipo` (`sumula`, `sv`, `tema`,
+`oj`, `pn`) e `orgao` (sigla, ex. `"STF"`) desambiguam. Zeros à esquerda e acentos
+são normalizados. Canceladas vêm incluídas e MARCADAS em `status_vigencia` — ao citar
+uma, avise o usuário da vigência.
 
 ```json
-buscar_semantica  {"consulta": "boa-fé objetiva", "k": 10}
-buscar_hibrida    {"consulta": "responsabilidade civil por inscrição indevida em cadastro de inadimplentes",
-                   "tribunal": "STJ", "ano_min": 2026, "ano_max": 2026, "k": 10}
-buscar_fts        {"consulta": "súmula 637", "orgao_code": "stf", "k": 5}
-buscar_regex      {"padrao": "usucapi[aã]o extraordin", "orgao_code": "stj", "k": 5}
-buscar_por_cnj    {"numero": "0081107-51.2015.8.13.0439"}
-buscar_por_ontologia {"l1_code": 287, "orgao_code": "stj", "ano_min": 2024, "ano_max": 2026, "k": 5}
+{"numero": "11", "tipo": "sv"}
+{"numero": "145", "tipo": "sumula", "orgao": "STF"}
+{"numero": "1234", "tipo": "tema"}
 ```
 
-Notas de uso:
-- **O parâmetro de texto chama-se `consulta`** em `buscar_semantica`/`buscar_fts`/
-  `buscar_hibrida` (e `padrao` em `buscar_regex`). **Nunca** `termo`, `query` ou
-  `texto`: nome errado de argumento volta hoje como o erro genérico *"erro interno ao
-  processar a consulta"* — quando vir essa mensagem numa busca, **confira primeiro o
-  nome dos argumentos** antes de supor indisponibilidade.
-- **Filtro de órgão difere por modalidade:** só `buscar_semantica` / `buscar_hibrida`
-  aceitam `tribunal` (ex.: `"STF"`). As demais (`buscar_regex`, `buscar_fts`,
-  `buscar_por_ontologia`) filtram por **`orgao_code`** — o slug minúsculo do órgão
-  (ex.: `"stf"`, `"stj"`). **Não** passe `tribunal` para essas: a tool rejeita o
-  argumento. (`buscar_por_cnj` recebe `tribunal_cnj` como componente CNJ.)
-- `buscar_semantica` / `buscar_hibrida` aceitam `tribunal`, `space` (`default` =
-  text-embedding-3-small; `premium` = gemini-2) e `k` (1-100, padrão 20).
-  `buscar_hibrida` aceita `ano_min`/`ano_max` e `ramo_l1` (sinal de ontologia);
-  `buscar_semantica` aceita `ano` (um ano único).
-- `buscar_semantica` para a intenção temática; **se vier fraco, escale para
-  `buscar_hibrida`** (mesma consulta) antes de desistir.
-- `buscar_regex` recusa padrões só de metacaracteres (ex.: `^[A-Z]+$`); inclua um
-  trecho literal ≥3 chars. Em erro, a tool devolve `{ "erro": "…", "resultados": [] }`
-  (nunca stack trace) — leia a mensagem e ajuste.
-- **Consultas amplas estouram o tempo** e voltam `{"erro": "a consulta excedeu o tempo
-  limite — restrinja o escopo…"}`. Mitigações comprovadas: em `buscar_por_ontologia`
-  **sempre** passe `orgao_code` + `ano_min`/`ano_max`; em `buscar_por_cnj` prefira o
-  **número CNJ completo** (componentes soltos como só ano+segmento estouram o tempo);
-  em `buscar_regex` ancore o padrão num literal longo e filtre por `orgao_code`.
-- `buscar_grafo` (`normalized_ref="Súmula 279"`, `direction="in"`) pode retornar
-  `total: 0` neste perfil mesmo para súmulas muito citadas (lane do grafo em
-  consolidação). **Não conclua "ninguém citou"** — diga que o grafo não retornou
-  arestas e ofereça `buscar_fts` com a forma literal (ex.: `"súmula 279"`) como
-  alternativa, que funciona.
-- **Ementa completa:** os hits trazem `ementa_snippet` (recorte). Quando o registro
-  expuser `unit_id`, use `obter_unidade_completa(unit_id=…)` para o texto integral da
-  unidade antes de citar trecho longo. Se o hit só trouxer `entity_id` (caso comum
-  hoje), **não** chame a tool com ele (não resolve) — cite pelo snippet + `link_completo`.
+### buscar_semantica — significado, não palavra
 
-### Paginação por cursor (keyset — disponível nas modalidades fts/regex/cnj/grafo)
+Padrão para perguntas conceituais. Parâmetros: `consulta` (texto), `k` (1-100),
+`tribunal` (sigla maiúscula, opcional), `ano` (um ano), `space` (`default` |
+`premium`).
 
-As modalidades `buscar_fts`, `buscar_regex`, `buscar_por_cnj` e `buscar_grafo` aceitam
-`sort`, `order`, `page_size` e `cursor` (keyset): a página vem com `page_info`
-(`has_more`, `next_cursor`, `truncated`). Para a página seguinte, repita a MESMA
-consulta com `cursor=<next_cursor>` — o cursor é opaco e assinado; não o edite.
-**Compatibilidade:** se o servidor responder erro à chamada com `cursor` (versão
-anterior do serviço ainda sem keyset), repita a chamada **sem** os parâmetros de
-paginação e trabalhe com a primeira página.
+```json
+{"consulta": "boa-fé objetiva", "k": 10}
+```
 
-## Ontologia OJBU (ramos reais — use estes códigos)
+### buscar_hibrida — relevância máxima (fusão de sinais)
 
-`buscar_por_ontologia` recebe `l1_code` (código TPU do ramo, inteiro), opcionalmente
-`l2_code`/`l3_code` (a sub-área exige o `l1_code` do seu ramo) **ou** `tema_transversal`.
-Os 21 ramos L1 (código TPU → ramo) são os nós reais da ontologia:
+Funde semântica + full-text + trigram + CNJ + ontologia via RRF com reranker.
+É a modalidade mais pesada — use quando a semântica vier fraca, e prefira `k` baixo.
+Parâmetros: `consulta`, `k`, `tribunal`, `ano_min`/`ano_max`, `ramo_l1`.
 
-| `l1_code` | Ramo | | `l1_code` | Ramo |
-|---|---|---|---|---|
-| 14 | Tributário | | 9633 | Criança e Adolescente |
-| 195 | Previdenciário | | 9985 | Administrativo e Dir. Público |
-| 287 | Penal | | 10110 | Ambiental |
-| 864 | Trabalho | | 11068 | Penal Militar |
-| 899 | Civil | | 11428 | Eleitoral |
-| 1156 | Consumidor | | 12480 | Saúde |
-| 1209 | Processual Penal | | 12734 | Assistencial |
-| 6191 | Internacional | | 12775 | Educação |
-| 7724 | Registros Públicos | | 1146 | Marítimo |
-| 8826 | Processual Civil e do Trabalho | | 11049 | Processual Penal Militar |
+```json
+{"consulta": "responsabilidade civil por inscrição indevida em cadastro de inadimplentes", "tribunal": "STJ", "k": 5}
+```
 
-Temas transversais (`tema_transversal=`): `DDG` (Digital e Proteção de Dados),
-`DER` (Econômico e Regulação), `DFN` (Financeiro e Orçamentário), `DAG` (Agrário e
-Fundiário Rural), `DID` (Pessoa Idosa e Envelhecimento). Use o tema transversal para
-recortes que cruzam ramos (ex.: LGPD → `DDG`), e o `l1_code` para o ramo em si.
+### buscar_fts — texto exato com stemming
 
-## Como citar (obrigatório)
+Full-text pt_unaccent, insensível a acento. Parâmetros: `consulta`, `k`,
+`orgao_code` (slug MINÚSCULO, ex. `"stf"`), `ano_min`/`ano_max`, `phrase`
+(exige a ordem das palavras — use só quando a ordem importa; restringe muito).
+Quando a consulta cita uma qualificada por número ("súmula 637"), o match exato
+da própria súmula vem PREPENDADO e sinalizado em `signals.qualificada_numero`.
 
-- **Sempre** cite o campo `link_completo` do registro retornado — é a URL estável,
-  deep-per-record, do acórdão na fonte oficial. **Nunca invente** número de processo,
-  ementa ou link.
-- Cite `tribunal`, `numero_processo` (ou `numero_processo_cnj`), `relator` e
-  `data_julgamento` quando presentes. Resuma a `ementa_snippet` em 1-2 frases.
-- Quando útil, mostre a classificação OJBU do registro (`classificacao.l1`,
-  `ramo_l1_codes`) e ofereça abrir o inteiro teor pelo `inteiro_teor_url`.
-- Se a busca **não** retornar resultado relevante (`total: 0` ou hits fracos),
-  **diga isso honestamente** — não preencha a lacuna com um precedente fabricado.
+```json
+{"consulta": "súmula 637", "orgao_code": "stf", "k": 5}
+```
 
-## Boas práticas
+### buscar_regex — padrão literal de forma
 
-- Comece restrito (tema + tribunal + faixa de ano) e amplie só se vier vazio.
-- Para "qual o entendimento atual", prefira precedentes qualificados (súmula /
-  repercussão geral) a um acórdão isolado: use `buscar_por_ontologia`/`buscar_grafo`
-  para chegar aos precedentes qualificados do tema.
+Regex POSIX; exija ≥3 caracteres literais no padrão (âncora do índice).
+Parâmetros: `padrao`, `k`, `orgao_code`.
+
+```json
+{"padrao": "usucapi[aã]o extraordin", "orgao_code": "stj", "k": 5}
+```
+
+### buscar_por_cnj — número de processo
+
+Prefira o número CNJ COMPLETO (com ou sem máscara) — casamento exato indexado.
+Componentes decompostos (`sequencial`, `ano`, `segmento`, `tribunal_cnj`,
+`origem`) existem, mas consultas só por componentes amplos podem exceder o tempo.
+
+```json
+{"numero": "0081107-51.2015.8.13.0439"}
+```
+
+### buscar_por_ontologia — ramo do direito (OJBU)
+
+`l1_code` aceita o código TPU (int) ou o slug do ramo. Principais: `899`/`DIR_CIVIL`,
+`287`/`DIR_PENAL`, `14`/`DIR_TRIB`, `864`/`DIR_TRAB`, `9985`/`DIR_ADMIN`,
+`195`/`DIR_PREV`, `1156`/`DIR_CONS_CONSUMIDOR`, `11428`/`DIR_EL`, `10110`/`DIR_AMB`,
+`8826`/`DIR_PROC_CIVIL`, `1209`/`DIR_PROC_PENAL`. Sub-área via `l2_code`/`l3_code`
+(exigem o `l1_code` do ramo). Temas transversais via `tema_transversal`: `DDG`
+(digital/dados), `DER` (econômico), `DFN` (financeiro), `DAG` (agrário), `DID` (idoso).
+
+```json
+{"l1_code": "DIR_CIVIL", "k": 5}
+```
+
+Sob carga, a combinação de facetas (`orgao_code` + `ano_min`/`ano_max`) pode exceder
+o tempo — se vier o erro de tempo, repita primeiro só com `l1_code`, depois refine.
+
+### consultar_informativos_stf / consultar_informativos_stj — informativos
+
+Entradas por tema dos informativos de jurisprudência (STF edições 1-1218,
+STJ 511-889). Parâmetros: `query`, `limite`.
+
+```json
+{"query": "fraude à execução", "limite": 5}
+```
+
+### obter_unidade_completa — texto integral de um hit
+
+Quando um hit trouxer `unit_id` (em `family_meta`), use-o para recuperar o texto
+completo antes de citar trecho longo. Não chame com `entity_id` (não resolve) —
+nesse caso cite pelo `ementa_snippet` + `link_completo`.
+
+```json
+{"unit_id": "<family_meta.unit_id de um hit>"}
+```
+
+## Tratamento de erros
+
+- **Mensagens de argumento são acionáveis**: "argumento desconhecido: 'termo' —
+  confira os argumentos aceitos" significa nome errado de parâmetro (o texto chama-se
+  `consulta`; em regex, `padrao`). Corrija e repita — não é indisponibilidade.
+- **`{"erro": "a consulta excedeu o tempo limite…"}`**: restrinja o escopo (órgão,
+  ano, `k` menor) ou simplifique a consulta e repita uma vez.
+- **`aviso_busca` presente**: a perna principal da busca falhou, mas o lookup exato
+  de qualificada respondeu — os `resultados` exibidos são confiáveis para citar.
+- **401 na primeira chamada**: repita UMA vez (validação de chave no cold-start).
+  Se persistir, oriente o usuário a revisar a chave configurada — nunca exiba a chave.
+- **`total: 0`**: diga honestamente que não encontrou; ofereça reformular ou ampliar.
+  Nunca preencha a lacuna com precedente inventado.
+
+## Regras de citação (obrigatório)
+
+- Cite SEMPRE o `link_completo` do registro (URL estável da fonte oficial). Nunca
+  invente número de processo, ementa ou link.
+- Inclua `tribunal`, `numero_processo` (ou `numero_processo_cnj`), `relator` e
+  `data_julgamento` quando presentes; resuma a `ementa_snippet` em 1-2 frases.
+- Para "entendimento atual", prefira qualificadas (súmula/SV/tema) via
+  `consultar_qualificada` a um acórdão isolado.
 - Preserve diacríticos e UTF-8 exatamente como na fonte.
-- A chave `ik_*` é injetada pelo cliente MCP no header `Authorization: Bearer`
-  (Claude Code: `userConfig`/keychain; Cowork: `managedMcpServers`; Codex:
-  `bearer_token_env_var`). **Se uma tool responder 401, repita UMA vez** (o primeiro
-  acesso após cold-start pode falhar transitoriamente enquanto o servidor valida a
-  chave); só se o 401 persistir avise o usuário para revisar a chave configurada —
-  nunca cole a chave em chat nem em commit.
-- **Respostas grandes:** o plugin aceita o `userConfig` opcional `max_output_kb`
-  (header `X-Iajus-Max-Output-Kb`) que fixa o orçamento de resposta por chamada no
-  servidor (16-8192 KB; acima disso a resposta vem truncada com aviso explícito
-  `[saida truncada…]`). O corte mais comum, porém, é do PRÓPRIO cliente — no Claude
-  Code, respostas acima de `MAX_MCP_OUTPUT_TOKENS` são cortadas localmente; para
-  ementas/textos longos prefira `k` menor + a unidade específica em vez de listas
-  enormes.
