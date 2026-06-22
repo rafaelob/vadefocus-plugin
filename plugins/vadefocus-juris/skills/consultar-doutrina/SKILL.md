@@ -85,6 +85,17 @@ Os ramos com obras no acervo (entre os 21 L1):
 doutrina concentra-se nesses; obras meta/transversais — teoria geral, prática — podem não
 ter um ramo único e aparecem sem classificação L1, honestamente, em vez de um ramo forçado.)
 
+## Acervo de obras (catálogo — 41 obras)
+
+O acervo tem **41 obras** de doutrina: **38 já pesquisáveis** + **3 pendentes de ingestão**
+(ainda NÃO no MCP — *Direito Administrativo* de Ricardo Alexandre e João de Deus; *Código de
+Processo Civil Comentado* de Daniel Amorim; *Direito Tributário* de Ricardo Alexandre). A lista
+completa por ramo, com a referência de cada obra e o que está pendente, está em
+**`references/CATALOGO_DOUTRINA.md`** — **consulte-a** para: (a) confirmar se uma obra/autor existe
+no acervo antes de citar (anti-alucinação); (b) **não** citar as 3 pendentes como se já estivessem
+disponíveis; (c) lembrar que as referências ABNT estão **incompletas na fonte** (sentinels). Se uma
+busca retornar obra fora do catálogo, confie na busca — o catálogo é um snapshot (2026-06-22).
+
 ## Como citar (obrigatório)
 
 - Cite **autor + título da obra**. Quando o registro trouxer `referencia_abnt`, use-a
