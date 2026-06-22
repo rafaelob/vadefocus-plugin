@@ -8,10 +8,12 @@ configurado. Não precisa configurar o MCP na mão.
 
 | Componente | Conteúdo |
 |---|---|
-| `skills/pesquisar-jurisprudencia/` | quando e **como** buscar e **citar** acórdãos/súmulas/RG pelas 7 modalidades |
+| `skills/pesquisar-jurisprudencia/` | quando e **como** buscar e **citar** acórdãos/súmulas/RG pelas modalidades, **filtrar/agrupar por relator** (jurimetria) e delegar a **subagentes** em levantamentos |
 | `skills/consultar-legislacao/` | como localizar leis/artigos **federais** por termo, tema (ontologia) ou citação literal |
-| `skills/consultar-legislacao-estadual/` | como consultar legislação **estadual** ao vivo (RJ/MG entre as UFs cobertas) por UF + tipo + número + ano |
+| `skills/consultar-legislacao-estadual/` | como consultar legislação **estadual** ao vivo (RJ e MG) por tipo + número + ano |
 | `skills/consultar-doutrina/` | como localizar e citar doutrina de autor + a referência ABNT da obra |
+| `skills/montar-apostila-didatica/` | monta **apostilas/material de estudo** de várias fontes (juris + lei + doutrina) e gera **HTML + PDF** com fontes rastreáveis |
+| `skills/gerar-questoes-concurso/` | gera **questões de concurso** (MP/Magistratura — C/E, múltipla, discursiva, peça/sentença, oral) ancoradas em fonte real, com **gabarito comentado**, em **HTML + PDF** |
 | `.mcp.json` | servidor MCP (streamable-HTTP) com header `Authorization: Bearer ${user_config.api_token}` |
 
 As skills são model-invoked: o Claude as usa sozinho quando a tarefa pede
@@ -60,10 +62,9 @@ repositório do marketplace (que só tem manifesto, **zero segredo**).
 /reload-plugins                                       # conecta o servidor MCP com a chave
 ```
 
-O plugin vem **desabilitado por padrão** (`defaultEnabled: false`) porque conecta a
-um serviço externo. Ao habilitar, informe a chave quando solicitado. Para trocar o
-endpoint, preencha o campo opcional **VadeFocus MCP URL** (`user_config.mcp_url`); em
-branco, usa o padrão de produção (serviço dedicado VadeFocus, perfil curado):
+O plugin vem **habilitado por padrão** (`defaultEnabled: true`); na instalação o Claude
+pede a sua chave `ik_*` (campo obrigatório, guardada no keychain). O endpoint do MCP já
+vem fixado no padrão de produção (serviço dedicado VadeFocus, perfil curado):
 
 ```
 https://vadefocus-mcp.iajus.com.br/mcp
@@ -96,7 +97,8 @@ export VADEFOCUS_API_TOKEN=ik_live_XXXXXXXX_....   # nunca commitar/colar em cha
 
 ## Compatibilidade de clientes
 
-> Clientes que aceitam Bearer estático: Claude Code, Claude Desktop, Cursor,
-> Gemini CLI, Codex (headless). Claude.ai web e ChatGPT exigem OAuth (v2 — WorkOS).
-> A chave é validada server-side; nunca trafega em log. **Não cole a chave em commits
-> ou chat.**
+> OAuth (padrão): Claude.ai web, ChatGPT e Claude Desktop conectam com zero chave,
+> via fluxo de navegador contra o AS self-hosted `app.iajus.com.br` (DCR, sem client
+> secret). Bearer estático `ik_*` é o fallback documentado para clientes headless que
+> aceitam token fixo: Claude Code, Cursor, Gemini CLI, Codex (headless). A chave é
+> validada server-side; nunca trafega em log. **Não cole a chave em commits ou chat.**

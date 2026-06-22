@@ -2,7 +2,7 @@
   "mcpServers": {
     "iajus": {
       "type": "http",
-      "url": "${user_config.mcp_url}",
+      "url": "https://vadefocus-mcp.iajus.com.br/mcp",
       "headers": {
         "Authorization": "Bearer ${user_config.api_token}",
         "X-Iajus-Max-Output-Kb": "${user_config.max_output_kb}"

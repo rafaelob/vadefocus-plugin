@@ -14,12 +14,13 @@
       "name": "vadefocus-juris",
       "source": "./plugins/vadefocus-juris",
       "displayName": "VadeFocus — Jurisprudência, Doutrina & Legislação BR",
-      "description": "Quatro skills (jurisprudência, doutrina, legislação federal e legislação estadual/municipal ao vivo) + acesso ao MCP remoto VadeFocus (jurisprudência STF/STJ/TSE/TRFs/TREs/TJ-RJ/TJ-MG, doutrina de autores, legislação federal e legislação estadual RJ/MG + municipal Rio/BH). Instale uma coisa: ganha as skills e o servidor MCP configurado, autenticado pela sua chave ik_*.",
-      "version": "1.0.0",
+      "description": "Seis skills (pesquisar jurisprudência com filtro por relator, doutrina, legislação federal e estadual/municipal ao vivo, montar apostilas didáticas e gerar questões de concurso MP/Magistratura em HTML+PDF) + acesso ao MCP remoto VadeFocus (jurisprudência STF/STJ/TSE/TRFs/TREs/TJ-RJ/TJ-MG, doutrina de autores, legislação federal e legislação estadual RJ/MG + municipal Rio/BH). Instale uma coisa: ganha as skills e o servidor MCP configurado, autenticado pela sua chave ik_*.",
+      "version": "1.1.0",
       "author": { "name": "VadeFocus", "email": "contato@vadefocus.com.br" },
       "homepage": "https://vadefocus.com.br",
       "license": "LicenseRef-Proprietary",
-      "keywords": ["jurisprudencia", "doutrina", "legislacao", "direito", "brasil", "stf", "stj", "mcp"]
+      "keywords": ["jurisprudencia", "doutrina", "legislacao", "direito", "brasil", "stf", "stj", "mcp"],
+      "defaultEnabled": true
     }
   ]
 }

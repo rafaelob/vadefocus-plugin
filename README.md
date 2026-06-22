@@ -9,7 +9,7 @@ zero segredo**: o acesso aos dados é gateado pela sua chave `ik_*` na camada MC
 | Marketplace | `vadefocus` (este repo) |
 | Plugin | [`vadefocus-juris`](plugins/vadefocus-juris/README.md) |
 | Servidor MCP | remoto (streamable-HTTP), autenticado por `Authorization: Bearer ik_*` |
-| Skills | pesquisar-jurisprudencia, consultar-legislacao, consultar-legislacao-estadual, consultar-doutrina |
+| Skills | pesquisar-jurisprudencia (com filtro por relator), consultar-legislacao, consultar-legislacao-estadual, consultar-doutrina, montar-apostila-didatica, gerar-questoes-concurso (material em HTML+PDF) |
 
 ## Instalação em 5 passos
 
@@ -27,8 +27,8 @@ zero segredo**: o acesso aos dados é gateado pela sua chave `ik_*` na camada MC
 
    No Claude Code interativo: `/plugin install vadefocus-juris@vadefocus`.
 
-3. **Habilitar e configurar** — o plugin vem desabilitado por padrão
-   (`defaultEnabled: false`). Ao habilitar, o Claude Code pede a configuração:
+3. **Habilitar e configurar** — o plugin já vem **habilitado por padrão**
+   (`defaultEnabled: true`); na primeira ativação o Claude Code pede a configuração:
 
    ```bash
    claude plugin enable vadefocus-juris@vadefocus
@@ -37,8 +37,8 @@ zero segredo**: o acesso aos dados é gateado pela sua chave `ik_*` na camada MC
    - **VadeFocus API Key** (`api_token`, obrigatória): sua chave `ik_…`.
      É mascarada e guardada no keychain do sistema — nunca em `settings.json`
      nem neste repositório. Solicite em <https://vadefocus.com.br>.
-   - **VadeFocus MCP URL** (`mcp_url`, opcional): deixe em branco para usar o
-     padrão de produção (serviço dedicado VadeFocus, perfil curado).
+   O endpoint do MCP já vem **fixado no padrão de produção** (serviço dedicado
+   VadeFocus, perfil curado): `https://vadefocus-mcp.iajus.com.br/mcp`.
 
    Depois rode `/reload-plugins` (ou reinicie a sessão) para conectar o MCP.
 
@@ -46,9 +46,10 @@ zero segredo**: o acesso aos dados é gateado pela sua chave `ik_*` na camada MC
 
    > liste as tools do servidor iajus
 
-   Esperado: as 7 modalidades de busca (`buscar_semantica`, `buscar_hibrida`,
+   Esperado: as 8 modalidades de busca (`buscar_semantica`, `buscar_hibrida`,
    `buscar_fts`, `buscar_regex`, `buscar_por_cnj`, `buscar_por_ontologia`,
-   `buscar_grafo`) e demais tools do perfil curado VadeFocus.
+   `buscar_grafo`, `buscar_jurimetria` — filtro/agrupamento por relator) e demais
+   tools do perfil curado VadeFocus.
 
 5. **Se receber 401** — a chave não foi aceita. Repita **uma vez**
    (cold-start do serviço pode atrasar a primeira validação); se o 401
@@ -66,5 +67,5 @@ zero segredo**: o acesso aos dados é gateado pela sua chave `ik_*` na camada MC
 
 ## Documentação do plugin
 
-Detalhes das skills, das 7 modalidades de busca e do uso via Codex/outros
+Detalhes das skills, das 8 modalidades de busca e do uso via Codex/outros
 clientes: [`plugins/vadefocus-juris/README.md`](plugins/vadefocus-juris/README.md).

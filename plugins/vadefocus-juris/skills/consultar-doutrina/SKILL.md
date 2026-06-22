@@ -1,7 +1,7 @@
 ---
 name: consultar-doutrina
 description: Consulta e cita DOUTRINA jurídica brasileira real (livros, manuais e tratados de autores) pelo MCP VadeFocus, com a referência bibliográfica ABNT da obra. Acione sempre que o usuário quiser o ensinamento doutrinário — o que a DOUTRINA/um DOUTRINADOR/AUTOR ensina ou defende sobre um instituto ou conceito, "o que Hely Lopes/Pacelli/a doutrina diz sobre X", "qual livro trata de Y", citar um livro/manual/tratado, ou a referência bibliográfica/ABNT de uma obra do acervo — em vez de um precedente judicial ou o texto de uma norma. NÃO use para precedentes/acórdãos/súmulas (skill pesquisar-jurisprudencia) nem para o texto de leis (skill consultar-legislacao).
-allowed-tools: mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa
+allowed-tools: mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa, mcp__iajus__obter_secao_doutrina, mcp__plugin_vadefocus-juris_iajus__obter_secao_doutrina
 ---
 
 # Consultar doutrina jurídica brasileira (VadeFocus)
@@ -52,10 +52,16 @@ Notas de uso:
 - **Filtro de órgão NÃO se aplica à doutrina** (livro não tem tribunal). Use o filtro de
   **família** (`family="doutrina"`); `buscar_por_ontologia`/`buscar_fts`/`buscar_regex`
   filtram por família/`l1_code`, não por `tribunal`.
-- **Trecho completo:** os hits trazem `snippet` (recorte). Quando o registro expuser
-  `unit_id`, use `obter_unidade_completa(unit_id=…, family="doutrina")` para o texto da
-  seção (sujeito ao teto de direitos autorais). Se o hit só trouxer `entity_id`, **não**
-  chame a tool com ele (não resolve) — cite pelo snippet + referência.
+- **Trecho completo (seção inteira da obra):** os hits trazem `snippet` (recorte) +
+  `family_meta` com `unit_id`, `external_uri` e `ref_interna` (que carrega `documento_id`
+  e `secao_anchor`). Para o texto integral da SEÇÃO use
+  `obter_secao_doutrina(documento_id=family_meta.ref_interna.documento_id, anchor=family_meta.ref_interna.secao_anchor)`
+  — devolve `obra_titulo`, `section_title`, `breadcrumbs` e páginas (sujeito ao teto de
+  direitos autorais; `anchor` é o nome certo do argumento, não `secao_anchor`/`unit_id`).
+  Sem o anchor, dá para localizar por `obter_secao_doutrina(documento_id=…, titulo_secao="…")`
+  (se ambíguo, devolve `candidatos[]` com os anchors). Alternativa por unidade:
+  `obter_unidade_completa(unit_id=family_meta.unit_id, family="doutrina")`. **Não** chame
+  nenhuma das duas só com `entity_id` (não resolve) — cite pelo snippet + referência.
 - `buscar_semantica`/`buscar_hibrida` aceitam `space` (`premium` = gemini-2 hierárquico,
   o tier da doutrina) e `k` (1-100). Prefira `premium` para doutrina — o embedding é
   hierárquico (seção + breadcrumb), pensado para texto de manual.
@@ -102,6 +108,11 @@ ter um ramo único e aparecem sem classificação L1, honestamente, em vez de um
 - Distinga DOUTRINA de JURISPRUDÊNCIA na resposta: o que o autor *defende* (doutrina) não
   é o que o tribunal *decidiu* (jurisprudência). Se o usuário quer os dois, combine esta
   skill com **pesquisar-jurisprudencia** e deixe claro o que é cada um.
+- **Levantamento amplo:** para varrer um ramo inteiro ou montar a base de um material,
+  paralelize com **subagentes** (ver a seção "Pesquisa em profundidade" da skill
+  **pesquisar-jurisprudencia**) — um subagente por sub-tema/autor. Esta skill alimenta
+  **montar-apostila-didatica** e **gerar-questoes-concurso**: quando o destino for material
+  de estudo, já retorne autor + obra + seção (`breadcrumb`) + `referencia_abnt` prontos.
 - Preserve diacríticos e UTF-8 exatamente como na fonte.
 - A chave `ik_*` é injetada pelo cliente MCP no header `Authorization: Bearer`
   (Claude Code: `userConfig`/keychain; Cowork: `managedMcpServers`; Codex:

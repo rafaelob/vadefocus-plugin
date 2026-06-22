@@ -18,7 +18,7 @@ mesma chave `ik_*`. Não há credencial nem host novos.
 
 O serviço VadeFocus cobre **exatamente**:
 
-- **Estadual:** **RJ** e **MG**. Qualquer outra UF (SP, BA, DF, …) é **recusada pelo
+- **Estadual:** **RJ** e **MG**. Qualquer outra UF é **recusada pelo
   plano** — a resposta vem como erro/negativa, NÃO como "norma não existe". Diga ao
   usuário que a UF está fora da cobertura do plano VadeFocus (hoje a recusa pode
   chegar como um erro técnico curto; trate-a como fora de escopo, nunca como
@@ -110,3 +110,6 @@ Notas de uso:
   `bearer_token_env_var`). **Em 401, repita UMA vez** (cold-start transitório); só
   se persistir avise o usuário para revisar a chave — nunca cole a chave em chat nem
   em commit.
+- **Material de estudo:** ao alimentar **montar-apostila-didatica** ou
+  **gerar-questoes-concurso**, carregue o **`link_completo`** (URL oficial deep-per-norma)
+  — é ele que vira a **citação inline com hyperlink** no material em HTML/PDF.

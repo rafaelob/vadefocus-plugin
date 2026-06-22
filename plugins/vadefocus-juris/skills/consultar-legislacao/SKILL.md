@@ -83,7 +83,7 @@ deep-link canônico em `link_completo` (`url_oficial`). Filtros comuns: `family`
   explicitamente — não apresente texto revogado como vigente. Quando a relação
   alteradora aparecer no grafo (`altera_norma`), aponte a norma e a data.
 - Preserve a grafia e os diacríticos exatamente como na fonte (UTF-8).
-- Se a norma não estiver na base (ex.: norma estadual fora de escopo, ou `total: 0`),
+- Se a norma não estiver na base (`total: 0` ou nenhum resultado),
   **diga isso** em vez de improvisar.
 - A cobertura é de **legislação federal**; jurisprudência tem skill própria
   (`pesquisar-jurisprudencia`).
@@ -111,3 +111,9 @@ deep-link canônico em `link_completo` (`url_oficial`). Filtros comuns: `family`
   (Claude Code: `userConfig`/keychain; Cowork: `managedMcpServers`; Codex:
   `bearer_token_env_var`). **Em 401, repita UMA vez** (cold-start transitório); só
   então peça para revisar a chave configurada — nunca cole a chave em chat.
+- **Levantamento amplo / material de estudo:** para varrer um tema em muitas normas,
+  paralelize com **subagentes** (ver "Pesquisa em profundidade" em
+  **pesquisar-jurisprudencia**). Esta skill alimenta **montar-apostila-didatica** e
+  **gerar-questoes-concurso**: ao retornar uma norma/dispositivo, **carregue o
+  `link_completo`** (URL oficial do Planalto) — é ele que vira a **citação inline com
+  hyperlink** no material em HTML/PDF.
