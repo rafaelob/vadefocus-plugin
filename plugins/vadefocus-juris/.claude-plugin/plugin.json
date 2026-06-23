@@ -2,7 +2,7 @@
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "vadefocus-juris",
   "displayName": "VadeFocus — Jurisprudência, Doutrina & Legislação BR",
-  "description": "MCP remoto VadeFocus (jurisprudência BR STF/STJ/TSE/TRF1-6/TREs/TJ-RJ/TJ-MG, doutrina de autores, legislação federal e estadual RJ/MG + municipal Rio/BH ao vivo) mais seis skills — pesquisar jurisprudência (com filtro/agrupamento por relator), consultar doutrina, legislação federal e estadual/municipal, montar apostilas didáticas e gerar questões de concurso (MP/Magistratura) em HTML+PDF — que ensinam o agente a pesquisar, citar e classificar pelas modalidades (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, jurimetria/relator) e a produzir material de estudo com fontes rastreáveis. Skills + servidor MCP já configurado numa instalação.",
+  "description": "MCP remoto VadeFocus (jurisprudência BR STF/STJ/TSE/TRFs/TREs/TJ-RJ/TJ-MG, doutrina, legislação federal e estadual/municipal RJ-MG ao vivo) + 6 skills: pesquisar jurisprudência (filtro/agrupamento por relator), consultar doutrina, consultar legislação, montar apostilas e gerar questões de concurso (MP/Magistratura) em HTML+PDF. Ensinam a pesquisar, citar e classificar pelas modalidades (semântica, híbrida, FTS, regex, CNJ, ontologia OJBU, jurimetria). Skills + MCP numa instalação.",
   "version": "1.1.0",
   "author": { "name": "VadeFocus", "email": "contato@vadefocus.com.br" },
   "homepage": "https://vadefocus.com.br",
