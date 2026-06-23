@@ -120,12 +120,14 @@ Browse por COLUNAS ESTRUTURADAS dos acórdãos (superset, nullable por órgão),
 
 - **Lista** (sem `group_by`, `modo: "linhas"`): devolve os acórdãos que casam os `filters`,
   mais recentes primeiro — um *browse* tipado. Use para "todos os acórdãos do relator X no STJ".
-  Cada resultado traz `link_completo`, `title`, `snippet` + um bloco **`jurimetria`** com os
-  campos estruturados: `relator` (**nome completo** — a forma normalizada é o que você *filtra*,
-  não o que volta), `tribunal`, `numero_processo`, `classe` + `classe_cnj_code`, `uf_origem`,
-  `resultado`, `votacao`, `tema_tipo`/`tema_numero`, `is_repercussao_geral`, `data_julgamento`,
-  e (migração 0110, **podem vir `null` enquanto o backfill por-órgão não chega**) `data_sessao`,
-  `ano_eleicao`, `is_jurisprudencia_selecionada`.
+  Cada resultado traz os campos estruturados **no topo do objeto** (não num sub-bloco):
+  `link_completo`, `relator` (**nome completo** — ex.: "Ministro(a) Antonio Saldanha Palheiro"; a
+  forma normalizada é o que você *filtra*, não o que volta), `classe` (ex.: "AgRg no HC"),
+  `tribunal`, `orgao_code`, `orgao_julgador`, `uf_origem`,
+  `numero_processo`/`numero_processo_cnj`/`numero_acordao`, `ano`, `data_julgamento`,
+  `is_repercussao_geral`, `tema_numero`, `ramo_l1_codes`, `classificacao`, `ementa_snippet` (+
+  `inteiro_teor_url` quando houver). Campos como `resultado`/`votacao`/`tema_tipo` servem para
+  **filtrar e agrupar**, mas não vêm ecoados na linha — use o modo agregado para vê-los por bucket.
 - **Agregado** (`group_by`, `modo: "agregado"`): `count(*)` por bucket → `{<dimensão>: valor, n}`.
   Use para "quantos acórdãos por relator", "distribuição por tribunal/ano/resultado". Dimensões:
   `relator`, `tribunal`, `orgao_code`, `ano`, `orgao_julgador`, `classe`, `uf`, `resultado`,
