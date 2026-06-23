@@ -16,11 +16,12 @@ real do MCP retornar) — nunca um autor/livro que não está aqui.
 
 ## Como citar uma obra deste acervo
 
-- Use a string **`referencia_abnt`** que a própria tool retorna no registro — é a fonte de verdade.
-- **Atenção honesta:** as referências das 38 ingeridas estão **incompletas na fonte** — local,
-  editora e ano não vieram nos PDFs, então a `referencia_abnt` traz os marcadores ABNT
-  `[S. l.]: [s. n.], [20--?]`. **Não invente** editora/local/ano para "completar"; apresente como
-  veio. O que é citável com segurança é **AUTOR + TÍTULO + seção/`breadcrumb` + página**.
+- **Cite por AUTOR + TÍTULO + seção/`breadcrumb` + página** — os campos que as tools de doutrina
+  realmente devolvem (`obter_secao_doutrina`: `autor`, `obra_titulo`, `section_title`, `page_start`;
+  busca: `family_meta.title` + `breadcrumb`). Monte a referência ABNT a partir deles.
+- **Atenção honesta:** a fonte não traz local/editora/ano → a referência ABNT fica **incompleta**
+  (`[S. l.]: [s. n.], [20--?]`). **Não invente** esses dados. A coluna `referencia_abnt` existe no
+  banco mas **não é retornada** pelas tools do perfil VadeFocus — não a espere no output.
 - **"(autoria não identificada na fonte)"** = o PDF não trouxe autor confiável (ou o parser pegou um
   fragmento do título) — cite **pelo título**, sem inventar autor.
 

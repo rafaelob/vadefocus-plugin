@@ -35,7 +35,7 @@ jurisprudência, doutrina ou legislação. Após instalar/habilitar, rode `/relo
 | `buscar_regex` | regex POSIX (exige ≥3 caracteres literais para ancorar o índice) |
 | `buscar_por_cnj` | número de processo CNJ (exato ou por componentes) |
 | `buscar_por_ontologia` | ramo/sub-área OJBU via subárvore ltree (L1/L2/L3 TPU + temas transversais) |
-| `buscar_grafo` | grafo de citações `legal_edges` (quem cita uma súmula/tema; auditoria de lacunas) |
+| `buscar_jurimetria` | listar/agrupar acórdãos por **relator** e outras colunas estruturadas (relator, tribunal, ano, classe, resultado) — browse tipado ou `count(*)` por bucket |
 
 Todas retornam o mesmo envelope (`{ modalidade, total, resultados:[…] }`), cobrem as
 famílias `jurisprudencia` + `legislacao` (+ `doutrina`) e são read-only.

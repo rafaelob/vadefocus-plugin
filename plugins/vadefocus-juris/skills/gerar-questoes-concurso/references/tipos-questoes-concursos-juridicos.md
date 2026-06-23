@@ -239,18 +239,7 @@ Marque **todos** antes de liberar o item. Reprovou em um → corrigir ou descart
 
 ---
 
-### Fontes (URLs)
-
-- CNJ Res. 75/2009 (íntegra): https://atos.cnj.jus.br/atos/detalhar/100 — PDF oficial: https://www.cnj.jus.br/wp-content/uploads/2009/07/rescnj_75.pdf
-- CNJ — ENAM: https://www.cnj.jus.br/cnj-aprova-regras-para-instituicao-do-exame-nacional-para-a-magistratura/ — https://cj.estrategia.com/portal/cnj-aprova-enam-substituir-primeira-fase-dos-concursos-magistratura/
-- CJF — concurso juiz federal (atualização 2024): https://www.cjf.jus.br/cjf/noticias/2024/fevereiro/cjf-aprova-atualizacao-do-normativo-que-dispoe-sobre-concurso-publico-de-juiz-federal-substituto
-- Cebraspe / C-E e "uma errada anula uma certa": https://www.estrategiaconcursos.com.br/blog/metodo-cebraspe-cespe-avaliacao/ — https://blogs.correiobraziliense.com.br/papodeconcurseiro/so-o-cebraspe-aplica-o-criterio-uma-errada-anula-uma-certa-em-concursos/ — https://www.jusbrasil.com.br/noticias/voce-sabia-que-o-cebraspe-nem-sempre-aplica-o-temido-criterio-uma-errada-anula-uma-certa/629399991
-- Pegadinhas Cebraspe: https://www.estrategiaconcursos.com.br/blog/pegadinhas-de-concurso-saiba-quais-sao-as-10-maiores/ — https://concursos.academiadoraciocinio.com/2025/10/22/o-algoritmo-secreto-do-cespe-padroes-que-se-repetem-ha-10-anos-e-ninguem-percebeu/
-- FGV (estilo, incompleta×incorreta, assertiva mais correta): https://www.estrategiaconcursos.com.br/blog/fgv/ — https://www.novaconcursos.com.br/portal/artigos/como-gabaritar-provas-banca-fgv-analise-completa/ — https://www.proximosconcursos.com/banca-fgv/ — https://www.proximosconcursos.com/questoes-de-multipla-escolha/ — https://olivaesouza.com.br/concurso-do-mpu-soberba-da-fgv-da-as-caras-mais-uma-vez-e-questoes-mal-formuladas-prejudicam-candidatos-mesmo-apos-gabarito-definitivo/
-- Perfis FCC/VUNESP/Consulplan/IADES/IBFC/AOCP: https://blog.grancursosonline.com.br/perfil-bancas-de-concursos-publicos/ — https://blog.grancursosonline.com.br/conhecendo-as-principais-bancas-examinadoras-fcc-e-vunesp/ — https://blog.decorandoaleiseca.com.br/perfil-banca-consulplan/ — https://www.proximosconcursos.com/banca-ibfc-saiba-tudo/ — https://www.direcaoconcursos.com.br/noticias/concurso-instituto-aocp
-- Espelho de sentença (estrutura/pesos): https://blog.decorandoaleiseca.com.br/prova-de-sentenca-concurso/ — https://conhecimento.fgv.br/sites/default/files/concursos/espelho-de-correcao-provas-praticas-de-sentenca_v.f.pdf — https://conhecimento.fgv.br/sites/default/files/concursos/espelho_sentenca_penal.pdf
-- STJ — controle de provas/espelho: https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/13022022-Questao-de-prova-ate-onde-a-Justica-pode-intervir-nos-criterios-da-banca-de-concurso-publico.aspx — https://magistrarcursos.com.br/blog/stj-decide-que-ausencia-de-espelho-de-correcao-em-prova-oral-de-concurso-para-magistratura-nao-e-ilegal/
-- Prova oral (pontos sorteados, arguição): https://www.trt2.jus.br/images/Institucional/concursos/magistrados/XL/pontos_concurso_publicacao_procedimentos.pdf — https://cj.estrategia.com/portal/como-funciona-a-prova-oral-do-mp-sp-promotor/
-- MP — peças, discursivas, regulamento: https://www.g7juridico.com.br/curso-pratica-mpe — https://arquivos.qconcursos.com/prova/arquivo_prova/129489/mpe-sp-2025-mpe-sp-promotor-de-justica-prova.pdf — https://cdn.cebraspe.org.br/concursos/mp_ce_19_promotor/arquivos/MP_CE_19_PROMOTOR_PROVAS_DISCURSIVAS.PDF — https://www.mpdft.mp.br/portal/pdf/unidades/conselho_superior/resolucoes_vigor/Resolucao_271_Concurso_MPDFT.pdf — https://www.mpf.mp.br/regiao3/estagie-conosco/provas-e-gabaritos-anteriores
-- Construção de itens/distratores (teoria): https://www.nescon.medicina.ufmg.br/biblioteca/imagem/Guia-elaboracao-itens-avaliacao.pdf
-- Gabarito comentado (pedagogia): https://blog.decorandoaleiseca.com.br/questoes-comentadas-erros-lei-seca/
+> **Proveniência.** As fontes (CNJ Res. 75/2009, normativo CJF, padrões de banca, espelhos FGV,
+> STJ sobre controle de provas, regulamentos do MP, teoria de itens) estão **citadas inline**, cada
+> afirmação ao lado da sua URL. Conforme o FIREWALL do topo, são da pesquisa de elaboração — **não
+> as cite nas questões**; toda âncora jurídica de um item vem de uma chamada ao MCP nesta sessão.

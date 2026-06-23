@@ -98,13 +98,17 @@ busca retornar obra fora do catálogo, confie na busca — o catálogo é um sna
 
 ## Como citar (obrigatório)
 
-- Cite **autor + título da obra**. Quando o registro trouxer `referencia_abnt`, use-a
-  como a referência bibliográfica (formato ABNT NBR 6023). **Atenção honesta:** muitas
-  obras do acervo têm a referência **incompleta** — quando `referencia_completa` for
-  falso, a string traz marcadores ABNT `[S. l.]` (local não informado), `[s. n.]`
-  (editora não informada) e/ou `[20--?]` (ano incerto). **Não invente** editora, local ou
-  ano para "completar" — apresente a referência como está e sinalize que a fonte não
-  informou esses dados.
+- Cite pelos campos que as tools **realmente devolvem**: `obter_secao_doutrina` retorna
+  `autor`, `obra_titulo`, `section_title`, `breadcrumbs` e `page_start`/`page_end`; os hits de
+  busca trazem `family_meta.title`, `family_meta.unit_id`, `family_meta.ref_interna` e
+  `family_meta.external_uri` (o `breadcrumbs` vem **só** de `obter_secao_doutrina`, não dos hits).
+  **Monte a referência ABNT a partir desses campos** — `AUTOR. *Título*. seção, p. X` (ABNT NBR
+  6023). (A coluna `referencia_abnt` existe no banco, mas **NÃO é retornada** por nenhuma tool do
+  perfil VadeFocus — não a espere no output.)
+- **Atenção honesta:** a fonte (PDF) **não traz local, editora nem ano**, então a referência fica
+  **incompleta** — use os marcadores ABNT `[S. l.]` (local), `[s. n.]` (editora) e `[20--?]` (ano).
+  **Não invente** esses dados para "completar"; sinalize que a fonte não os informou. A lista das
+  41 obras do acervo está em `references/CATALOGO_DOUTRINA.md`.
 - Cite o capítulo/seção (`breadcrumb`/`section_title`) e a página (`page_start`) quando
   presentes — a doutrina é citada por trecho, não pela obra inteira.
 - Resuma o trecho retornado (`snippet`) em 1-2 frases; ofereça abrir o trecho pelo
@@ -123,7 +127,8 @@ busca retornar obra fora do catálogo, confie na busca — o catálogo é um sna
   paralelize com **subagentes** (ver a seção "Pesquisa em profundidade" da skill
   **pesquisar-jurisprudencia**) — um subagente por sub-tema/autor. Esta skill alimenta
   **montar-apostila-didatica** e **gerar-questoes-concurso**: quando o destino for material
-  de estudo, já retorne autor + obra + seção (`breadcrumb`) + `referencia_abnt` prontos.
+  de estudo, já retorne `autor` + `obra_titulo` + seção (`breadcrumb`/`section_title`) + `page_start`
+  prontos — a referência ABNT é montada a partir desses campos (a tool não devolve uma string pronta).
 - Preserve diacríticos e UTF-8 exatamente como na fonte.
 - A chave `ik_*` é injetada pelo cliente MCP no header `Authorization: Bearer`
   (Claude Code: `userConfig`/keychain; Cowork: `managedMcpServers`; Codex:

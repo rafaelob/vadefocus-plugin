@@ -103,7 +103,7 @@ Componentes decompostos (`sequencial`, `ano`, `segmento`, `tribunal_cnj`,
 `l1_code` aceita o código TPU (int) ou o slug do ramo. Principais: `899`/`DIR_CIVIL`,
 `287`/`DIR_PENAL`, `14`/`DIR_TRIB`, `864`/`DIR_TRAB`, `9985`/`DIR_ADMIN`,
 `195`/`DIR_PREV`, `1156`/`DIR_CONS_CONSUMIDOR`, `11428`/`DIR_EL`, `10110`/`DIR_AMB`,
-`8826`/`DIR_PROC_CIVIL`, `1209`/`DIR_PROC_PENAL`. Sub-área via `l2_code`/`l3_code`
+`8826`/`DIR_PROC_CIVIL` (Processual Civil **e do Trabalho**), `1209`/`DIR_PROC_PENAL`. Sub-área via `l2_code`/`l3_code`
 (exigem o `l1_code` do ramo). Temas transversais via `tema_transversal`: `DDG`
 (digital/dados), `DER` (econômico), `DFN` (financeiro), `DAG` (agrário), `DID` (idoso).
 
@@ -157,8 +157,8 @@ reaproveite esse `relator_norm` nas demais modalidades.
 
 ### consultar_informativos_stf / consultar_informativos_stj — informativos
 
-Entradas por tema dos informativos de jurisprudência (STF edições 1-1218,
-STJ 511-889). Parâmetros: `query`, `limite`.
+Entradas por tema dos informativos de jurisprudência (STF Informativos 690-1200+,
+STJ 511-888+; cobertura 2013-2026). Parâmetros: `query`, `limite`.
 
 ```json
 {"query": "fraude à execução", "limite": 5}
@@ -190,9 +190,8 @@ consolide. Dê a cada um: o recorte exato, as tools que pode usar (as deste plug
 formato de retorno (**dossiê citável**: órgão, nº processo/acórdão, relator, data, ementa em
 trecho e `link_completo` — **nada de memória**).
 
-- **Claude / Claude Code:** use o agente de pesquisa dedicado deste pacote
-  (`pesquisador-juris`, quando presente) ou abra subagentes via a ferramenta de tarefas
-  (Task/Agent), lançando-os na mesma mensagem para correrem juntos.
+- **Claude / Claude Code:** abra subagentes via a ferramenta de tarefas (Task/Agent) do
+  seu cliente, lançando-os **na mesma mensagem** para correrem em paralelo.
 - **ChatGPT / Codex e afins:** dispare as buscas independentes **em lote** (várias tool-calls
   na mesma rodada) ou, se o cliente suportar, sub-tarefas paralelas — o efeito é o mesmo:
   cobrir vários ângulos de uma vez.

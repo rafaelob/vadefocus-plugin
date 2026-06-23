@@ -57,7 +57,7 @@ Armadilhas REAIS (vividas em teste ao vivo — seja honesto quando ocorrerem):
 | Texto integral em markdown hierárquico | `obter_texto_legislacao_markdown` | `{"tipo": "LEI", "numero": "13709", "ano": 2018}`. Normas longas: ver nota de tamanho abaixo. |
 | Achar a norma pelo tema da ementa | `buscar_legislacao_federal` | `{"termo": "proteção de dados pessoais", "limite": 5}`. |
 | "Quais leis saíram em 2024?" | `listar_legislacao_federal` | `{"tipo": "LEI", "ano": 2024, "limite": 20}`. |
-| Cadeia de alterações / conversão MPV→LEI | `consultar_grafo_legislacao` | `{"norma_ref": "LEI 8078/1990", "max_depth": 1}`. Pode vir vazia para normas ainda não projetadas no grafo — diga isso, não conclua "nunca alterada". |
+| Cadeia de alterações / conversão MPV→LEI | `consultar_grafo_legislacao` | `{"norma_ref": "LEI_8078_1990", "max_depth": 1}`. **`norma_ref` usa o ID canônico underscore `TIPO_NUMERO_ANO`** (ex.: `LEI_8078_1990`, `DEL_2848_1940`), o mesmo `norma_id` emitido pelos demais tools — **NÃO** use "LEI 8078/1990" (casamento exato, sem normalização → volta vazio). Pode vir vazia para normas ainda não projetadas no grafo — diga isso, não conclua "nunca alterada". |
 
 ## Como consultar (modalidades, com `family="legislacao"`)
 

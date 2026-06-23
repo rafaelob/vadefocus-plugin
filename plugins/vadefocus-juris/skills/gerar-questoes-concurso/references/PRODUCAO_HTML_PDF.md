@@ -34,10 +34,18 @@ identidade visual VadeFocus e o contrato de citação do usuário. Mesmo padrão
     <section id="sec-1"><h2>1. {Seção}</h2> … </section>
     <!-- … demais seções … -->
   </main>
+  <section id="links-oficiais" class="links-oficiais">
+    <h2>Links oficiais</h2>
+    <!-- Lei + jurisprudência: cada nota repete a referência curta + a URL POR EXTENSO
+         (clicável no HTML, legível no PDF impresso). Uma nota por citação inline. -->
+    <ol>
+      <li id="n1">{ref curta da lei/acórdão} — {URL oficial (link_completo) por extenso}</li>
+    </ol>
+  </section>
   <section id="referencias" class="referencias">
     <h2>Referências</h2>
     <!-- SÓ doutrina entra aqui, em ABNT (NBR 6023). Lei/jurisprudência ficam nos hyperlinks inline. -->
-    <ol><li id="ref-1">{referencia_abnt da obra citada}</li></ol>
+    <ol><li id="ref-1">{referência ABNT da obra: AUTOR. *Título*. seção, p. X.}</li></ol>
   </section>
 </body>
 </html>
@@ -90,9 +98,10 @@ table{ border-collapse:collapse; width:100%; } th,td{ border:1px solid var(--acc
   cada `<li id="n1">` repete a referência curta + a **URL por extenso** (clicável no HTML,
   legível no PDF). Toda citação inline de lei/jurisprudência TEM a sua nota correspondente.
 - **Doutrina = SEM link inline e SEM nota de URL.** No corpo, cite autor/obra em texto comum
-  ("como ensina Fulano, …"); a **referência ABNT** (`referencia_abnt`) entra **só** na seção
-  `#referencias` no final. Se `referencia_completa` for falso, mantenha os marcadores ABNT
-  (`[S. l.]`, `[s. n.]`, `[20--?]`) como vieram — não invente editora/local/ano.
+  ("como ensina Fulano, …"); a **referência ABNT** entra **só** na seção `#referencias` no final,
+  **montada a partir dos campos que a tool devolve** (`autor`, `obra_titulo`, `section_title`,
+  `page_start`) — nenhuma tool do perfil retorna uma string ABNT pronta. A fonte (PDF) não traz
+  local/editora/ano: mantenha os marcadores ABNT (`[S. l.]`, `[s. n.]`, `[20--?]`) — não invente.
 - **Nunca crie hyperlink sem `link_completo` real.** Sem link, cite em texto e siga. Antes de
   fechar, **verifique**: todo `href` aponta para uma URL `http(s)` real retornada por uma busca
   (zero `#`/placeholder/`example.com`); nenhuma `<a href>` envolve doutrina.
