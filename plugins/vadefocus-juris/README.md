@@ -30,7 +30,7 @@ jurisprudência, doutrina ou legislação. Após instalar/habilitar, rode `/relo
 | Tool | Para quê |
 |---|---|
 | `buscar_semantica` | busca vetorial/densa por significado (padrão para perguntas conceituais) |
-| `buscar_hibrida` | fusão RRF (densa + FTS + trigram + CNJ + ontologia) — melhor relevância geral |
+| `buscar_hibrida` | fusão RRF (densa + FTS + trigram + CNJ + ontologia) — melhor relevância geral; aceita faceta `relator_norm` + `classe_cnj_code` (jurisprudência) |
 | `buscar_fts` | full-text pt_unaccent, stemming PT, insensível a acento |
 | `buscar_regex` | regex POSIX (exige ≥3 caracteres literais para ancorar o índice) |
 | `buscar_por_cnj` | número de processo CNJ (exato ou por componentes) |

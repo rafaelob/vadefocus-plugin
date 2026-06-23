@@ -116,39 +116,65 @@ o tempo — se vier o erro de tempo, repita primeiro só com `l1_code`, depois r
 
 ### buscar_jurimetria — listar/agrupar acórdãos por relator (e outras colunas)
 
-Browse por COLUNAS ESTRUTURADAS dos acórdãos, em dois modos:
+Browse por COLUNAS ESTRUTURADAS dos acórdãos (superset, nullable por órgão), em dois modos:
 
-- **Lista** (sem `group_by`): devolve os acórdãos que casam os `filters`, mais recentes
-  primeiro — um *browse* tipado. Use para "todos os acórdãos do relator X no STJ".
-- **Agregado** (`group_by`): `count(*)` por bucket. Use para "quantos acórdãos por relator",
-  "distribuição por tribunal/ano/resultado". Dimensões: `relator`, `tribunal`, `orgao_code`,
-  `ano`, `orgao_julgador`, `classe`, `uf`, `resultado`, `votacao`, `tema_tipo`.
+- **Lista** (sem `group_by`, `modo: "linhas"`): devolve os acórdãos que casam os `filters`,
+  mais recentes primeiro — um *browse* tipado. Use para "todos os acórdãos do relator X no STJ".
+  Cada resultado traz `link_completo`, `title`, `snippet` + um bloco **`jurimetria`** com os
+  campos estruturados: `relator` (**nome completo** — a forma normalizada é o que você *filtra*,
+  não o que volta), `tribunal`, `numero_processo`, `classe` + `classe_cnj_code`, `uf_origem`,
+  `resultado`, `votacao`, `tema_tipo`/`tema_numero`, `is_repercussao_geral`, `data_julgamento`,
+  e (migração 0110, **podem vir `null` enquanto o backfill por-órgão não chega**) `data_sessao`,
+  `ano_eleicao`, `is_jurisprudencia_selecionada`.
+- **Agregado** (`group_by`, `modo: "agregado"`): `count(*)` por bucket → `{<dimensão>: valor, n}`.
+  Use para "quantos acórdãos por relator", "distribuição por tribunal/ano/resultado". Dimensões:
+  `relator`, `tribunal`, `orgao_code`, `ano`, `orgao_julgador`, `classe`, `uf`, `resultado`,
+  `votacao`, `tema_tipo`, `grau`, `data_sessao_ano`, `ano_eleicao`.
 
-Filtros (no objeto `filters`): `relator_norm` (relator NORMALIZADO — igualdade exata),
-`relator_nome` (casa por substring no nome completo), `tribunal`, `orgao_code`,
-`classe_cnj_code`, `uf_origem`, `ano_min`/`ano_max`, `resultado_code`, `is_repercussao_geral`,
-`numero_processo`/`numero_acordao` (casam por dígitos). Chaves desconhecidas são ignoradas.
+Filtros (no objeto `filters`, todos opcionais; chaves desconhecidas são ignoradas):
+- **Relator:** `relator_norm` (NORMALIZADO — igualdade exata), `relator_nome` (substring no nome
+  completo), `relator_canonico` (nome Title-Case canônico — igualdade exata).
+- **Classe/órgão julgador:** `classe_cnj_code` (código CNJ inteiro), `classe_processual_sigla`
+  (sigla textual), `orgao_julgador_norm` (colegiado normalizado, ex.: `2 turma`, `plenario` —
+  ~95% do corpus; os ~5% sem o campo caem no bucket `null`).
+- **Identidade:** `numero_processo`, `numero_acordao`, `numero_processo_cnj` (casam por **dígitos**
+  — combine com `orgao_code`/`tribunal` para eficiência).
+- **Tribunal/UF/tempo:** `tribunal`, `orgao_code`, `uf_origem`, `ano_min`/`ano_max`,
+  `data_julgamento_min`/`data_julgamento_max` (ISO `YYYY-MM-DD`).
+- **Desfecho/tese:** `resultado_code`, `votacao_code`, `tema_tipo`, `tema_numero`,
+  `is_repercussao_geral`, `grau_instancia`, `segredo_justica`.
+- **Eleitoral/sessão (0110, podem vir vazios por órgão):** `data_sessao_min`/`data_sessao_max`,
+  `ano_eleicao`, `is_jurisprudencia_selecionada`.
 
 ```json
 {"filters": {"relator_nome": "Barroso", "tribunal": "STF"}, "k": 20}
 {"filters": {"tribunal": "STJ", "ano_min": 2022}, "group_by": "relator"}
+{"filters": {"orgao_code": "trt3", "classe_processual_sigla": "RTOrd"}, "group_by": ["ano", "resultado"]}
 ```
 
-> Só órgãos do acervo VadeFocus aparecem (o filtro de órgão é aplicado no próprio SQL);
-> um `relator` é "normalizado" — se não souber a forma exata, comece por `relator_nome`
+> Só órgãos do acervo VadeFocus aparecem (o filtro de órgão é aplicado no próprio SQL).
+> Um `relator` é "normalizado" — se não souber a forma exata, comece por `relator_nome`
 > (substring) ou descubra o nome num hit de `buscar_semantica`/`buscar_hibrida` e refine.
+> **Ausente ≠ não informado:** um filtro num campo ainda não preenchido para aquele órgão
+> volta vazio (não é erro) — sinalize isso ao usuário em vez de concluir "não existe".
 
-### Filtrar por relator em QUALQUER busca (`relator_norm`)
+### Filtrar por relator / classe em QUALQUER busca
 
-Para **estreitar uma busca temática a um relator**, passe `relator_norm` (relator
-normalizado, igualdade exata) — disponível em `buscar_hibrida`, `buscar_fts`, `buscar_regex`
-e `buscar_por_ontologia`. Para busca **densa por significado** com filtro de relator, use
-`buscar_hibrida` (que funde a perna densa) com `relator_norm` — a `buscar_semantica` pura
-não recebe esse filtro. O campo está preenchido em ~99,2% do corpus e só se aplica à
-família jurisprudência.
+Para **estreitar uma busca temática**, as modalidades aceitam facetas estruturadas além do texto:
+- **`relator_norm`** (relator normalizado, igualdade exata) — em `buscar_hibrida`, `buscar_fts`,
+  `buscar_regex` e `buscar_por_ontologia`. Preenchido em ~99,2% do corpus (faceta de 1ª linha).
+  A `buscar_semantica` pura **não** recebe relator — para busca densa por significado com filtro
+  de relator use `buscar_hibrida` (que funde a perna densa) com `relator_norm`.
+- **`classe_cnj_code`** (código CNJ da classe, inteiro) — em `buscar_hibrida`. É **esparso**
+  (~6% do corpus tem código CNJ normalizado), então use como faceta **opcional**: ela restringe
+  à minoria com classe normalizada. Para browse por classe em larga escala prefira
+  `buscar_jurimetria` (que também aceita `classe_processual_sigla`, a sigla textual).
+
+Ambas só se aplicam à família jurisprudência.
 
 ```json
 {"consulta": "dano moral coletivo", "relator_norm": "<forma normalizada>", "k": 10}
+{"consulta": "responsabilidade do Estado", "classe_cnj_code": 1116, "k": 10}
 ```
 
 Se você só tem o nome "humano" do relator (ex.: "Min. Luís Roberto Barroso"), use primeiro
