@@ -1,7 +1,7 @@
 ---
 name: pesquisar-jurisprudencia
-description: Pesquisa jurisprudência brasileira real no MCP VadeFocus (STF, STJ, TSE, TREs, TRFs, TJ-RJ, TJ-MG) — busca semântica/híbrida/full-text/regex, número de processo CNJ, ramo OJBU, filtro e agrupamento por RELATOR (jurimetria), consulta estruturada de súmula/súmula vinculante/tema/OJ por número e informativos STF/STJ. Use sempre que o usuário pedir precedente, acórdão, súmula, tema de repercussão geral, entendimento de tribunal, "acórdãos do relator X", panorama/levantamento jurisprudencial ou informativo — nunca responda jurisprudência de memória. Para um levantamento que exija várias buscas, delegue a subagentes de pesquisa em paralelo (ver seção "Pesquisa em profundidade"). Não use para doutrina de autor (consultar-doutrina) nem texto de lei (consultar-legislacao).
-allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_vadefocus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_jurimetria, mcp__plugin_vadefocus-juris_iajus__buscar_jurimetria, mcp__iajus__consultar_qualificada, mcp__plugin_vadefocus-juris_iajus__consultar_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_vadefocus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_vadefocus-juris_iajus__consultar_informativos_stj, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa
+description: "Pesquisa jurisprudência brasileira real no MCP VadeFocus: busca semântica, híbrida, full-text, regex, CNJ, OJBU, relator, jurimetria agregada, súmulas, temas, OJ e informativos STF/STJ. Use para precedente, acórdão, entendimento de tribunal, acórdãos do relator X, estatística de julgados ou levantamento jurisprudencial. Não use para doutrina nem lei."
+allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_vadefocus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__jurimetria_volume, mcp__plugin_vadefocus-juris_iajus__jurimetria_volume, mcp__iajus__jurimetria_relator, mcp__plugin_vadefocus-juris_iajus__jurimetria_relator, mcp__iajus__jurimetria_classe, mcp__plugin_vadefocus-juris_iajus__jurimetria_classe, mcp__iajus__jurimetria_orgao_julgador, mcp__plugin_vadefocus-juris_iajus__jurimetria_orgao_julgador, mcp__iajus__jurimetria_resultado, mcp__plugin_vadefocus-juris_iajus__jurimetria_resultado, mcp__iajus__jurimetria_lag_publicacao, mcp__plugin_vadefocus-juris_iajus__jurimetria_lag_publicacao, mcp__iajus__consultar_qualificada, mcp__plugin_vadefocus-juris_iajus__consultar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_vadefocus-juris_iajus__obter_versoes_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_vadefocus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_vadefocus-juris_iajus__consultar_informativos_stj, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa
 ---
 
 # Pesquisar jurisprudência brasileira
@@ -10,7 +10,8 @@ allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__
 
 O servidor indexa acórdãos colegiados, súmulas, precedentes qualificados e informativos
 dos órgãos do acervo VadeFocus: **STF, STJ, TSE, TRF1-6, os 27 TREs, TJ-RJ e TJ-MG**
-(2013-2026; TREs 2016-2026), com classificação OJBU alinhada ao CNJ/TPU. Se o usuário
+(2000-2026 — controle concentrado do STF desde 1988, TRF6 desde 2022; **TJ-RJ por ora só câmaras CÍVEIS — as criminais estão em
+coleta**), com classificação OJBU alinhada ao CNJ/TPU. Se o usuário
 pedir um órgão que não esteja nesta lista, diga com honestidade que o acervo não cobre
 esse órgão e ofereça os que cobre — não tente contornar nem invente resultado.
 
@@ -18,16 +19,23 @@ esse órgão e ofereça os que cobre — não tente contornar nem invente result
 
 Decida pela INTENÇÃO da pergunta, nesta ordem de verificação:
 
-1. O usuário deu o NÚMERO de uma súmula/SV/tema/OJ → `consultar_qualificada`.
+1. O usuário deu o NÚMERO de uma súmula/SV/tema/OJ → `consultar_qualificada`. Se ele quiser
+   saber se a redação MUDOU (histórico de versões/alterações), use `obter_versoes_qualificada`
+   com o `entity_id` que veio do hit da `consultar_qualificada`.
 2. O usuário deu um número de processo CNJ → `buscar_por_cnj`.
 3. Pergunta conceitual/temática → `buscar_semantica`; se vier fraco, `buscar_hibrida`.
 4. Expressão técnica literal → `buscar_fts`; padrão de forma (regex) → `buscar_regex`.
 5. "Todos os acórdãos do ramo X" → `buscar_por_ontologia`.
-6. "Acórdãos do relator X", "quantos acórdãos por relator", "liste/agrupe por relator,
-   tribunal, ano, classe ou resultado" → `buscar_jurimetria` (lista ou agrega por colunas
-   estruturadas). Para **filtrar uma busca temática por relator**, passe `relator_norm`
-   nas modalidades de busca (ver "Filtrar por relator").
-7. "O que saiu no informativo sobre X" → `consultar_informativos_stf` / `_stj`.
+6. "Acórdãos do relator X": para o **agregado** ("quem mais relata", "quantos por relator")
+   → `jurimetria_relator`; para **listar** os acórdãos de um relator, use `buscar_hibrida` /
+   `buscar_fts` com o filtro `relator_norm` (ver "Filtrar por relator").
+7. Pergunta QUANTITATIVA/estatística EXATA ("quantas decisões o TJRJ julgou por ano", "quem
+   mais relata no STJ", "quais câmaras/classes dominam", "qual a taxa de provimento", "quanto
+   tempo o STJ leva para publicar após julgar") → as tools de **jurimetria agregada**
+   (`jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` /
+   `jurimetria_orgao_julgador` / `jurimetria_resultado` / `jurimetria_lag_publicacao`) — dão
+   contagens EXATAS do read-model, com envelope de honestidade (ver "Jurimetria agregada").
+8. "O que saiu no informativo sobre X" → `consultar_informativos_stf` / `_stj`.
 
 ## Ferramentas
 
@@ -46,6 +54,27 @@ uma, avise o usuário da vigência.
 {"numero": "145", "tipo": "sumula", "orgao": "STF"}
 {"numero": "1234", "tipo": "tema"}
 ```
+
+### obter_versoes_qualificada — histórico de redações de uma qualificada
+
+Reader POR ID: dado o `entity_id` de uma qualificada (obtido de um hit da
+`consultar_qualificada`), devolve a **linha do tempo das redações** + os **eventos de
+alteração**. Use quando o usuário perguntar se uma súmula/tese "mudou de redação", "foi
+alterada", "desde quando vale a redação atual" ou quiser a versão histórica.
+
+Parâmetro: `entity_id` (string, obrigatório — pegue-o no campo do hit da qualificada).
+Retorna `{tribunal, tipo, numero, status_vigencia, total_versoes, teve_alteracao_de_redacao,
+versoes: [{ordem, enunciado, tese, vigencia_inicio, vigencia_fim, is_vigente, status}],
+eventos: [{tipo, data_evento, data_publicacao, decisao_origem, ...}]}`. Quando `total_versoes ≤ 1`
+e não há eventos, vem um `aviso` de que só a redação vigente/baseline está modelada — reporte
+isso em vez de afirmar que nunca houve alteração.
+
+```json
+{"entity_id": "<entity_id de um hit de consultar_qualificada>"}
+```
+
+Não enumera órgãos: o chamador já precisa ter o `entity_id` (que só sai de uma
+`consultar_qualificada` órgão-escopada), então é seguro citar a redação vigente e as anteriores.
 
 ### buscar_semantica — significado, não palavra
 
@@ -114,51 +143,42 @@ Componentes decompostos (`sequencial`, `ano`, `segmento`, `tribunal_cnj`,
 Sob carga, a combinação de facetas (`orgao_code` + `ano_min`/`ano_max`) pode exceder
 o tempo — se vier o erro de tempo, repita primeiro só com `l1_code`, depois refine.
 
-### buscar_jurimetria — listar/agrupar acórdãos por relator (e outras colunas)
+### Jurimetria AGREGADA — números EXATOS do read-model (não do texto)
 
-Browse por COLUNAS ESTRUTURADAS dos acórdãos (superset, nullable por órgão), em dois modos:
+Para perguntas QUANTITATIVAS exatas (volumes, rankings, taxas de desfecho, lag de
+publicação), prefira as tools abaixo a contar hits de busca: elas leem os **rollups
+agregados** do banco (`agg_decisions_*`), com contagens exatas e um envelope de honestidade
+`jurimetria {snapshot_id, as_of, denominator_definition, value_kind, coverage_pct, truncado}`.
+Só órgãos do acervo VadeFocus (STF, STJ, TSE, TRFs, TREs, TJ-RJ, TJ-MG) entram na contagem
+(o escopo é aplicado no próprio SQL) — um `orgao` fora do acervo volta vazio, não erro.
 
-- **Lista** (sem `group_by`, `modo: "linhas"`): devolve os acórdãos que casam os `filters`,
-  mais recentes primeiro — um *browse* tipado. Use para "todos os acórdãos do relator X no STJ".
-  Cada resultado traz os campos estruturados **no topo do objeto** (não num sub-bloco):
-  `link_completo`, `relator` (**nome completo** — ex.: "Ministro(a) Antonio Saldanha Palheiro"; a
-  forma normalizada é o que você *filtra*, não o que volta), `classe` (ex.: "AgRg no HC"),
-  `tribunal`, `orgao_code`, `orgao_julgador`, `uf_origem`,
-  `numero_processo`/`numero_processo_cnj`/`numero_acordao`, `ano`, `data_julgamento`,
-  `is_repercussao_geral`, `tema_numero`, `ramo_l1_codes`, `classificacao`, `ementa_snippet` (+
-  `inteiro_teor_url` quando houver). Campos como `resultado`/`votacao`/`tema_tipo` servem para
-  **filtrar e agrupar**, mas não vêm ecoados na linha — use o modo agregado para vê-los por bucket.
-- **Agregado** (`group_by`, `modo: "agregado"`): `count(*)` por bucket → `{<dimensão>: valor, n}`.
-  Use para "quantos acórdãos por relator", "distribuição por tribunal/ano/resultado". Dimensões:
-  `relator`, `tribunal`, `orgao_code`, `ano`, `orgao_julgador`, `classe`, `uf`, `resultado`,
-  `votacao`, `tema_tipo`, `grau`, `data_sessao_ano`, `ano_eleicao`.
+| Tool | Assinatura | Para quê |
+|---|---|---|
+| `jurimetria_volume` | `orgao?` e/ou `ano?` (ou `ano_de`/`ano_ate`); `top` 1-200 (padrão 50). **Pelo menos um recorte é obrigatório.** | Volume por órgão × ano. Ex.: `jurimetria_volume(orgao="tjrj")` → série anual do TJ-RJ; `jurimetria_volume(ano=2024, top=20)` → maiores órgãos do acervo em 2024. |
+| `jurimetria_relator` | `orgao` (OBRIGATÓRIO), `relator?` (substring, sem acento), `top` 1-50 (padrão 25) | Quem mais relata num órgão + período de atuação. **LGPD:** figura nominal com n<20 é suprimida ("amostra insuficiente"). |
+| `jurimetria_classe` | `orgao` (OBRIGATÓRIO), `ano?` ou `ano_de`/`ano_ate`, `top` 1-100 (padrão 25) | Volume por classe processual CNJ. O bucket `classe_cnj_code=-1` é a massa SEM classe resolvida; o envelope traz `cobertura_classe_pct`. |
+| `jurimetria_orgao_julgador` | `orgao` (OBRIGATÓRIO), `filtro?` (substring), `top` 1-100 (padrão 25) | Volume por câmara/turma/seção (unidade organizacional — sem supressão LGPD). Ex.: "quais câmaras do TJ-RJ mais julgam?". |
+| `jurimetria_resultado` | `orgao?` e/ou recorte de ano (`ano?` ou `ano_de`/`ano_ate`). **Pelo menos um recorte é obrigatório.** | Taxas de DESFECHO (provimento/improvimento) por órgão × ano. Cada desfecho vem com **denominador duplo** rotulado: `share_over_known` (n/decididas) E `share_over_all` (n/total). **LGPD:** recortes com <20 decisões conhecidas são suprimidos. |
+| `jurimetria_lag_publicacao` | `orgao?` OU `ano?`. **Pelo menos um recorte é obrigatório.** | Lag de publicação (dias `data_publicacao − data_julgamento`, p50/p90) por órgão × ano. **NÃO é duração do processo** — só o intervalo publicação−julgamento. Órgãos sem `data_publicacao` (vários TJs) saem sem lag. |
 
-Filtros (no objeto `filters`, todos opcionais; chaves desconhecidas são ignoradas):
-- **Relator:** `relator_norm` (NORMALIZADO — igualdade exata), `relator_nome` (substring no nome
-  completo), `relator_canonico` (nome Title-Case canônico — igualdade exata).
-- **Classe/órgão julgador:** `classe_cnj_code` (código CNJ inteiro), `classe_processual_sigla`
-  (sigla textual), `orgao_julgador_norm` (colegiado normalizado, ex.: `2 turma`, `plenario` —
-  ~95% do corpus; os ~5% sem o campo caem no bucket `null`).
-- **Identidade:** `numero_processo`, `numero_acordao`, `numero_processo_cnj` (casam por **dígitos**
-  — combine com `orgao_code`/`tribunal` para eficiência).
-- **Tribunal/UF/tempo:** `tribunal`, `orgao_code`, `uf_origem`, `ano_min`/`ano_max`,
-  `data_julgamento_min`/`data_julgamento_max` (ISO `YYYY-MM-DD`).
-- **Desfecho/tese:** `resultado_code`, `votacao_code`, `tema_tipo`, `tema_numero`,
-  `is_repercussao_geral`, `grau_instancia`, `segredo_justica`.
-- **Eleitoral/sessão (0110, podem vir vazios por órgão):** `data_sessao_min`/`data_sessao_max`,
-  `ano_eleicao`, `is_jurisprudencia_selecionada`.
+Regras de honestidade (obrigatório):
+
+- **Taxa de desfecho SÓ via `jurimetria_resultado`** — nunca infira provimento/improvimento de
+  contagens de volume. Reporte a taxa SEMPRE com o denominador (`share_over_known` vs
+  `share_over_all`) e o `coverage_pct`; cobertura baixa NÃO é representativa (o extractor
+  abstém em dispositivo ambíguo) — diga "baixa cobertura", não uma taxa nua.
+- **`jurimetria_lag_publicacao` NÃO é duração do processo.** Quando o coverage é baixo ou o
+  órgão não expõe `data_publicacao`, reporte "sem cobertura" e NÃO estime.
+- `aviso: "sem cobertura para o recorte"` = lacuna de ingestão/rollup, **não** volume zero no
+  mundo real. Reporte `as_of` (data do snapshot) quando o número embasar uma afirmação.
+- Sem recorte (`orgao`/`ano`) a tool recusa com erro pedindo o recorte — não insista; peça-o
+  ao usuário. Rótulos de código de classe via `consultar_ontologia_juridica`.
 
 ```json
-{"filters": {"relator_nome": "Barroso", "tribunal": "STF"}, "k": 20}
-{"filters": {"tribunal": "STJ", "ano_min": 2022}, "group_by": "relator"}
-{"filters": {"orgao_code": "trt3", "classe_processual_sigla": "RTOrd"}, "group_by": ["ano", "resultado"]}
+{"orgao": "tjrj"}
+{"orgao": "stj", "relator": "Nancy"}
+{"orgao": "stj", "ano_de": 2020, "ano_ate": 2024}
 ```
-
-> Só órgãos do acervo VadeFocus aparecem (o filtro de órgão é aplicado no próprio SQL).
-> Um `relator` é "normalizado" — se não souber a forma exata, comece por `relator_nome`
-> (substring) ou descubra o nome num hit de `buscar_semantica`/`buscar_hibrida` e refine.
-> **Ausente ≠ não informado:** um filtro num campo ainda não preenchido para aquele órgão
-> volta vazio (não é erro) — sinalize isso ao usuário em vez de concluir "não existe".
 
 ### Filtrar por relator / classe em QUALQUER busca
 
@@ -169,8 +189,8 @@ Para **estreitar uma busca temática**, as modalidades aceitam facetas estrutura
   de relator use `buscar_hibrida` (que funde a perna densa) com `relator_norm`.
 - **`classe_cnj_code`** (código CNJ da classe, inteiro) — em `buscar_hibrida`. É **esparso**
   (~6% do corpus tem código CNJ normalizado), então use como faceta **opcional**: ela restringe
-  à minoria com classe normalizada. Para browse por classe em larga escala prefira
-  `buscar_jurimetria` (que também aceita `classe_processual_sigla`, a sigla textual).
+  à minoria com classe normalizada. Para o panorama por classe em larga escala prefira
+  `jurimetria_classe` (volume exato por classe CNJ de um órgão, com `cobertura_classe_pct`).
 
 Ambas só se aplicam à família jurisprudência.
 
@@ -180,13 +200,14 @@ Ambas só se aplicam à família jurisprudência.
 ```
 
 Se você só tem o nome "humano" do relator (ex.: "Min. Luís Roberto Barroso"), use primeiro
-`buscar_jurimetria` com `relator_nome` (substring) para confirmar a forma normalizada; depois
-reaproveite esse `relator_norm` nas demais modalidades.
+`jurimetria_relator` com `relator` (substring, sem acento) no órgão em questão para confirmar
+a forma normalizada; depois reaproveite esse `relator_norm` nas modalidades de busca. O nome
+também aparece nos hits de `buscar_semantica`/`buscar_hibrida`.
 
 ### consultar_informativos_stf / consultar_informativos_stj — informativos
 
 Entradas por tema dos informativos de jurisprudência (STF Informativos 690-1200+,
-STJ 511-888+; cobertura 2013-2026). Parâmetros: `query`, `limite`.
+STJ 511-888+). Parâmetros: `query`, `limite`.
 
 ```json
 {"query": "fraude à execução", "limite": 5}

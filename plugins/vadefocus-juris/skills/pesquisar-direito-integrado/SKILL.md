@@ -1,6 +1,6 @@
 ---
 name: pesquisar-direito-integrado
-description: Pesquisa jurídica INTEGRADA — responde uma questão de direito cruzando as TRÊS fontes ao mesmo tempo, amarrando o que a LEGISLAÇÃO vigente dispõe, como a JURISPRUDÊNCIA dos tribunais interpreta, e como a DOUTRINA explica e critica. Use quando o usuário pedir uma pesquisa COMPLETA ou fundamentada, um parecer, um memorando jurídico, a base legal e jurisprudencial de uma tese, "o que diz a lei E os tribunais E a doutrina sobre X", fundamentação para petição ou decisão, ou um panorama que precise amarrar dispositivo de lei mais precedente mais doutrina. Orquestra as ferramentas das três famílias (legislação, jurisprudência, doutrina) com a ontologia OJBU e entrega uma resposta com a cadeia lei-precedente-doutrina explícita e citada. NÃO use quando o pedido for de UMA fonte só — então prefira pesquisar-jurisprudencia, consultar-legislacao ou consultar-doutrina; nem para montar material de estudo (montar-apostila-didatica) ou questões (gerar-questoes-concurso).
+description: "Pesquisa jurídica integrada no MCP VadeFocus: cruza legislação vigente, jurisprudência e doutrina real para responder questão de direito. Use para pesquisa completa, parecer, tese, fundamentação de petição ou decisão, ou base legal e jurisprudencial. Entrega cadeia lei, precedente e doutrina. Não use para uma fonte só, apostila ou questões."
 allowed-tools: mcp__iajus__consultar_ontologia_juridica, mcp__plugin_vadefocus-juris_iajus__consultar_ontologia_juridica, mcp__iajus__pesquisar_legislacao, mcp__plugin_vadefocus-juris_iajus__pesquisar_legislacao, mcp__iajus__ler_dispositivo_legal, mcp__plugin_vadefocus-juris_iajus__ler_dispositivo_legal, mcp__iajus__consultar_legislacao_federal, mcp__plugin_vadefocus-juris_iajus__consultar_legislacao_federal, mcp__iajus__obter_texto_legislacao_markdown, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao_markdown, mcp__iajus__consultar_grafo_legislacao, mcp__plugin_vadefocus-juris_iajus__consultar_grafo_legislacao, mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__consultar_qualificada, mcp__plugin_vadefocus-juris_iajus__consultar_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_vadefocus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_vadefocus-juris_iajus__consultar_informativos_stj, mcp__iajus__obter_secao_doutrina, mcp__plugin_vadefocus-juris_iajus__obter_secao_doutrina, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa
 ---
 
@@ -15,8 +15,8 @@ de fundamentação explícita.
 ## Escopo e honestidade
 
 O acervo VadeFocus cobre legislação federal + estadual/municipal (UFs e municípios ingeridos),
-jurisprudência de **STF, STJ, TSE, TRF1-6, os 27 TREs, TJ-RJ e TJ-MG** (2013-2026; TREs 2016-2026,
-OJBU/CNJ) e doutrina real (livros e manuais de autores ingeridos). Quando uma das três fontes não
+jurisprudência de **STF, STJ, TSE, TRF1-6, os 27 TREs, TJ-RJ e TJ-MG** (2000-2026 — STF controle concentrado desde 1988, TRF6 desde 2022;
+TJ-RJ só câmaras cíveis por ora, OJBU/CNJ) e doutrina real (livros e manuais de autores ingeridos). Quando uma das três fontes não
 cobre o ponto pedido (ex.: doutrina de um nicho não ingerido, tribunal fora do acervo), **diga
 explicitamente qual perna ficou descoberta** — uma pesquisa integrada honesta nomeia as lacunas,
 nunca preenche com texto de memória.
@@ -53,6 +53,11 @@ Siga as etapas; pule uma fonte só quando a pergunta de fato não a envolver (e 
    - **O que a doutrina explica** — conceito, fundamento e crítica.
    - **Síntese** — a posição integrada (lei + jurisprudência + doutrina) e, ao final, as **lacunas**
      (fonte que o acervo não cobriu, ponto sem precedente, divergência ainda aberta).
+
+> Quando o produto final desta pesquisa for uma **peça, parecer, memorial, voto ou ementa**
+> (não só a resposta integrada), continue na skill **redigir-peca-juridica**: ela transforma a
+> cadeia lei-precedente-doutrina já levantada em texto forense com a estrutura, a linguagem
+> jurídica e a citação corretas (padrão CNJ / ABNT).
 
 ## Paralelize as três pernas com SUBAGENTES
 
