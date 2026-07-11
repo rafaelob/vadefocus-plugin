@@ -1,8 +1,8 @@
 {
   "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
   "name": "vadefocus-juris",
-  "displayName": "VadeFocus — Jurisprudência, Doutrina & Legislação BR",
-  "description": "MCP remoto VadeFocus (jurisprudência BR STF/STJ/TSE/TRFs/TREs/TJ-RJ/TJ-MG, doutrina, legislação federal e estadual/municipal RJ-MG) + 8 skills: pesquisa jurídica integrada (lei+juris+doutrina), pesquisar jurisprudência (relator, jurimetria e vigência), consultar doutrina, consultar legislação federal e estadual/municipal, redigir peça/ementa (padrão CNJ), montar apostilas e gerar questões (MP/Magistratura) — modalidades: semântica, híbrida, FTS, regex, CNJ, ontologia + jurimetria agregada.",
+  "displayName": "VadeFocus - Jurisprudência, Doutrina & Legislação BR",
+  "description": "MCP remoto VadeFocus (jurisprudência BR STF/STJ/TSE/TRFs/TREs/TJ-RJ/TJ-MG, doutrina, legislação federal e estadual/municipal RJ-MG) + 8 skills: pesquisa jurídica integrada (lei+juris+doutrina), pesquisar jurisprudência (relator, jurimetria e vigência), consultar doutrina, consultar legislação federal e estadual/municipal, redigir peça/ementa (padrão CNJ), montar apostilas e gerar questões (MP/Magistratura) - modalidades: semântica, híbrida, FTS, regex, CNJ, ontologia + jurimetria agregada.",
   "version": "2.0.0",
   "author": {
     "name": "VadeFocus",
@@ -26,14 +26,14 @@
     "api_token": {
       "type": "string",
       "title": "VadeFocus API Key",
-      "description": "Sua chave VadeFocus (formato ik_…). Obrigatória em todos os planos; sem chave válida o MCP responde 401. A chave é mascarada e guardada no keychain do sistema — nunca em settings.json nem no repositório. Solicite em https://vadefocus.com.br.",
+      "description": "Sua chave VadeFocus (formato ik_…). Obrigatória em todos os planos; sem chave válida o MCP responde 401. A chave é mascarada e guardada no keychain do sistema - nunca em settings.json nem no repositório. Solicite em https://vadefocus.com.br.",
       "sensitive": true,
       "required": true
     },
     "max_output_kb": {
       "type": "string",
       "title": "Tamanho máximo de resposta por consulta, em KB (opcional)",
-      "description": "Orçamento de tamanho da resposta de cada ferramenta, em KB (header X-Iajus-Max-Output-Kb). Vazio = padrão do servidor (sem limite servidor-side). Um número (ex.: 2048) fixa o orçamento desta instalação — aceito entre 16 e 8192 KB; acima do orçamento a resposta vem truncada com aviso explícito. Dica: o corte mais comum é do PRÓPRIO cliente — no Claude Code, aumente também a env MAX_MCP_OUTPUT_TOKENS para respostas longas (textos integrais de lei).",
+      "description": "Orçamento de tamanho da resposta de cada ferramenta, em KB (header X-Iajus-Max-Output-Kb). Vazio = padrão do servidor (sem limite servidor-side). Um número (ex.: 2048) fixa o orçamento desta instalação - aceito entre 16 e 8192 KB; acima do orçamento a resposta vem truncada com aviso explícito. Dica: o corte mais comum é do PRÓPRIO cliente - no Claude Code, aumente também a env MAX_MCP_OUTPUT_TOKENS para respostas longas (textos integrais de lei).",
       "default": ""
     }
   },
