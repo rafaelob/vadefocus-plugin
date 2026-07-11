@@ -3,7 +3,7 @@
   "name": "vadefocus-juris",
   "displayName": "VadeFocus — Jurisprudência, Doutrina & Legislação BR",
   "description": "MCP remoto VadeFocus (jurisprudência BR STF/STJ/TSE/TRFs/TREs/TJ-RJ/TJ-MG, doutrina, legislação federal e estadual/municipal RJ-MG) + 8 skills: pesquisa jurídica integrada (lei+juris+doutrina), pesquisar jurisprudência (relator, jurimetria e vigência), consultar doutrina, consultar legislação federal e estadual/municipal, redigir peça/ementa (padrão CNJ), montar apostilas e gerar questões (MP/Magistratura) — modalidades: semântica, híbrida, FTS, regex, CNJ, ontologia + jurimetria agregada.",
-  "version": "1.6.0",
+  "version": "2.0.0",
   "author": {
     "name": "VadeFocus",
     "email": "contato@vadefocus.com.br"

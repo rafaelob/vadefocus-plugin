@@ -1,7 +1,7 @@
 ---
 name: pesquisar-direito-integrado
 description: "Pesquisa jurídica integrada no MCP VadeFocus: cruza legislação vigente, jurisprudência e doutrina real para responder questão de direito. Use para pesquisa completa, parecer, tese, fundamentação de petição ou decisão, ou base legal e jurisprudencial. Entrega cadeia lei, precedente e doutrina. Não use para uma fonte só, apostila ou questões."
-allowed-tools: mcp__iajus__consultar_ontologia_juridica, mcp__plugin_vadefocus-juris_iajus__consultar_ontologia_juridica, mcp__iajus__pesquisar_legislacao, mcp__plugin_vadefocus-juris_iajus__pesquisar_legislacao, mcp__iajus__ler_dispositivo_legal, mcp__plugin_vadefocus-juris_iajus__ler_dispositivo_legal, mcp__iajus__consultar_legislacao_federal, mcp__plugin_vadefocus-juris_iajus__consultar_legislacao_federal, mcp__iajus__obter_texto_legislacao_markdown, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao_markdown, mcp__iajus__consultar_grafo_legislacao, mcp__plugin_vadefocus-juris_iajus__consultar_grafo_legislacao, mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__consultar_qualificada, mcp__plugin_vadefocus-juris_iajus__consultar_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_vadefocus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_vadefocus-juris_iajus__consultar_informativos_stj, mcp__iajus__obter_secao_doutrina, mcp__plugin_vadefocus-juris_iajus__obter_secao_doutrina, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa
+allowed-tools: mcp__iajus__obter_ontologia_juridica, mcp__plugin_vadefocus-juris_iajus__obter_ontologia_juridica, mcp__iajus__buscar_dispositivos, mcp__plugin_vadefocus-juris_iajus__buscar_dispositivos, mcp__iajus__obter_dispositivo_legal, mcp__plugin_vadefocus-juris_iajus__obter_dispositivo_legal, mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_vadefocus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__obter_texto_norma, mcp__plugin_vadefocus-juris_iajus__obter_texto_norma, mcp__iajus__obter_grafo_norma, mcp__plugin_vadefocus-juris_iajus__obter_grafo_norma, mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__buscar_qualificada, mcp__plugin_vadefocus-juris_iajus__buscar_qualificada, mcp__iajus__buscar_informativos_stf, mcp__plugin_vadefocus-juris_iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__plugin_vadefocus-juris_iajus__buscar_informativos_stj, mcp__iajus__obter_secao_doutrina, mcp__plugin_vadefocus-juris_iajus__obter_secao_doutrina, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa
 ---
 
 # Pesquisa jurídica integrada (lei + jurisprudência + doutrina)
@@ -25,18 +25,18 @@ nunca preenche com texto de memória.
 
 Siga as etapas; pule uma fonte só quando a pergunta de fato não a envolver (e diga que pulou).
 
-1. **Enquadrar o tema.** Identifique o ramo/sub-área OJBU com `consultar_ontologia_juridica` (dá o
+1. **Enquadrar o tema.** Identifique o ramo/sub-área OJBU com `obter_ontologia_juridica` (dá o
    `l1_code`/`l2_code` que você reusa para focar as buscas de jurisprudência por ontologia e para
    conferir que está no ramo certo).
-2. **LEI primeiro (a base positiva).** `pesquisar_legislacao` para achar a(s) norma(s) e o
-   dispositivo aplicável; `ler_dispositivo_legal` para o texto do artigo. **Confira a vigência**:
-   `consultar_grafo_legislacao` revela se o dispositivo foi alterado/revogado (cite o texto VIGENTE e
-   sinalize alteração quando houver). Para a íntegra, `obter_texto_legislacao_markdown`. Anote o
+2. **LEI primeiro (a base positiva).** `buscar_dispositivos` para achar a(s) norma(s) e o
+   dispositivo aplicável; `obter_dispositivo_legal` para o texto do artigo. **Confira a vigência**:
+   `obter_grafo_norma` revela se o dispositivo foi alterado/revogado (cite o texto VIGENTE e
+   sinalize alteração quando houver). Para a íntegra, `obter_texto_norma`. Anote o
    `link_completo` oficial de cada norma.
 3. **JURISPRUDÊNCIA (como os tribunais leem a lei).** Comece pela tese vinculante: se houver
-   súmula/SV/tema/RG sobre o ponto, `consultar_qualificada` pelo número, ou descubra-a em
+   súmula/SV/tema/RG sobre o ponto, `buscar_qualificada` pelo número, ou descubra-a em
    `buscar_hibrida`. Para o entendimento corrente, `buscar_semantica`/`buscar_hibrida` (focando o
-   ramo via `buscar_por_ontologia` com o `l1_code` da etapa 1) e `consultar_informativos_stf`/`_stj`
+   ramo via `buscar_por_ontologia` com o `l1_code` da etapa 1) e `buscar_informativos_stf`/`_stj`
    para o que saiu recente. Capture, por decisão, órgão, nº, relator, data, trecho da ementa e
    `link_completo`.
 4. **DOUTRINA (o porquê e a crítica).** Busque a doutrina com `buscar_semantica`/`buscar_hibrida`
@@ -93,5 +93,5 @@ cruze e sintetize você. Dê a cada subagente: o recorte exato, as tools desta f
   lacuna na síntese.
 - **401 na primeira chamada:** repita UMA vez (validação de chave no cold-start). Persistindo,
   oriente a revisar a chave configurada — nunca exiba a chave.
-- **Vigência ambígua** (`consultar_grafo_legislacao` sem dado): cite o texto como está e avise que a
+- **Vigência ambígua** (`obter_grafo_norma` sem dado): cite o texto como está e avise que a
   vigência do dispositivo não pôde ser confirmada pelo grafo — não afirme vigência que não verificou.

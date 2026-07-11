@@ -1,7 +1,7 @@
 ---
 name: consultar-legislacao-estadual
 description: Consulta legislação ESTADUAL (RJ e MG) e MUNICIPAL (Rio de Janeiro e Belo Horizonte) ao vivo pelo MCP VadeFocus — leis, decretos e normas das assembleias/câmaras, na fonte oficial. Acione quando o usuário pedir uma lei/decreto/norma de ESTADO ou MUNICÍPIO do escopo ou seu texto íntegra, "lei estadual nº Y de MG", "lei municipal de BH número Z". A consulta é por UF/município + tipo + número + ano. NÃO use para legislação FEDERAL (consultar-legislacao), acórdãos nem doutrina.
-allowed-tools: mcp__iajus__consultar_legislacao_estadual, mcp__plugin_vadefocus-juris_iajus__consultar_legislacao_estadual, mcp__iajus__obter_texto_legislacao_estadual, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao_estadual, mcp__iajus__legislacao_estadual_status, mcp__plugin_vadefocus-juris_iajus__legislacao_estadual_status, mcp__iajus__consultar_legislacao_municipal, mcp__plugin_vadefocus-juris_iajus__consultar_legislacao_municipal, mcp__iajus__obter_texto_legislacao_municipal, mcp__plugin_vadefocus-juris_iajus__obter_texto_legislacao_municipal, mcp__iajus__legislacao_municipal_status, mcp__plugin_vadefocus-juris_iajus__legislacao_municipal_status
+allowed-tools: mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_vadefocus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__obter_texto_norma, mcp__plugin_vadefocus-juris_iajus__obter_texto_norma, mcp__iajus__obter_cobertura_legislacao, mcp__plugin_vadefocus-juris_iajus__obter_cobertura_legislacao, mcp__iajus__buscar_norma_fonte_oficial, mcp__plugin_vadefocus-juris_iajus__buscar_norma_fonte_oficial, mcp__iajus__obter_texto_norma, mcp__plugin_vadefocus-juris_iajus__obter_texto_norma, mcp__iajus__obter_cobertura_legislacao, mcp__plugin_vadefocus-juris_iajus__obter_cobertura_legislacao
 ---
 
 # Consultar legislação estadual e municipal ao vivo (VadeFocus)
@@ -26,14 +26,14 @@ O serviço VadeFocus cobre **exatamente**:
 - **Municipal:** **Rio de Janeiro** e **Belo Horizonte** (aliases aceitos: "RJ",
   "Rio", "BH"). Outros municípios são recusados da mesma forma.
 
-Prontidão real por fonte (chame `legislacao_estadual_status` /
-`legislacao_municipal_status` na dúvida):
+Prontidão real por fonte (chame `obter_cobertura_legislacao` /
+`obter_cobertura_legislacao` na dúvida):
 
 - **MG (ALMG)** — `ready`, verificada ao vivo: uma chamada já traz ementa + texto
   integral. Exemplo real que funciona:
   ```json
-  consultar_legislacao_estadual {"uf": "MG", "tipo": "LEI", "numero": "14184", "ano": 2002}
-  obter_texto_legislacao_estadual {"uf": "MG", "tipo": "LEI", "numero": "14184", "ano": 2002}
+  buscar_norma_fonte_oficial {"uf": "MG", "tipo": "LEI", "numero": "14184", "ano": 2002}
+  obter_texto_norma {"uf": "MG", "tipo": "LEI", "numero": "14184", "ano": 2002}
   ```
   (metadados + link oficial ALMG; o texto integral veio com ~25 KB em markdown.)
 - **RJ (ALERJ)** — best-effort (`stub`): a base é Lotus Notes/Domino com busca
@@ -42,7 +42,7 @@ Prontidão real por fonte (chame `legislacao_estadual_status` /
   localizada na fonte** — nunca invente.
 - **Belo Horizonte (CMBH)** — `ready` para resolução. Exemplo real:
   ```json
-  consultar_legislacao_municipal {"municipio": "Belo Horizonte", "tipo": "LEI", "numero": "8616", "ano": 2003}
+  buscar_norma_fonte_oficial {"municipio": "Belo Horizonte", "tipo": "LEI", "numero": "8616", "ano": 2003}
   ```
   → ementa ("Código de Posturas…") + `link_completo` oficial. **Atenção:** o texto
   integral nem sempre é extraível (`tem_texto_integral: false` /
@@ -67,11 +67,11 @@ A identidade da norma é obrigatória: **UF (ou município) + tipo + número + a
 
 | Necessidade | Tool | Argumentos |
 |---|---|---|
-| Metadados de norma estadual (link, ementa, data) | `consultar_legislacao_estadual` | `uf`, `tipo`, `numero`, `ano` |
-| Texto íntegra estadual (markdown hierárquico) | `obter_texto_legislacao_estadual` | `uf`, `tipo`, `numero`, `ano` |
-| Metadados de norma municipal | `consultar_legislacao_municipal` | `municipio`, `tipo`, `numero`, `ano` |
-| Texto íntegra municipal | `obter_texto_legislacao_municipal` | `municipio`, `tipo`, `numero`, `ano` |
-| Prontidão da cobertura | `legislacao_estadual_status` / `legislacao_municipal_status` | (sem argumentos) |
+| Metadados de norma estadual (link, ementa, data) | `buscar_norma_fonte_oficial` | `uf`, `tipo`, `numero`, `ano` |
+| Texto íntegra estadual (markdown hierárquico) | `obter_texto_norma` | `uf`, `tipo`, `numero`, `ano` |
+| Metadados de norma municipal | `buscar_norma_fonte_oficial` | `municipio`, `tipo`, `numero`, `ano` |
+| Texto íntegra municipal | `obter_texto_norma` | `municipio`, `tipo`, `numero`, `ano` |
+| Prontidão da cobertura | `obter_cobertura_legislacao` / `obter_cobertura_legislacao` | (sem argumentos) |
 
 Notas de uso:
 - **`uf`/`municipio` é sempre obrigatória.** Sem ela a consulta é ambígua — peça ao

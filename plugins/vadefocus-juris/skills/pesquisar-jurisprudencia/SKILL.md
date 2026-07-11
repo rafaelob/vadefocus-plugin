@@ -1,7 +1,7 @@
 ---
 name: pesquisar-jurisprudencia
 description: "Pesquisa jurisprudência brasileira real no MCP VadeFocus: busca semântica, híbrida, full-text, regex, CNJ, OJBU, relator, jurimetria agregada, súmulas, temas, OJ e informativos STF/STJ. Use para precedente, acórdão, entendimento de tribunal, acórdãos do relator X, estatística de julgados ou levantamento jurisprudencial. Não use para doutrina nem lei."
-allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_vadefocus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__jurimetria_volume, mcp__plugin_vadefocus-juris_iajus__jurimetria_volume, mcp__iajus__jurimetria_relator, mcp__plugin_vadefocus-juris_iajus__jurimetria_relator, mcp__iajus__jurimetria_classe, mcp__plugin_vadefocus-juris_iajus__jurimetria_classe, mcp__iajus__jurimetria_orgao_julgador, mcp__plugin_vadefocus-juris_iajus__jurimetria_orgao_julgador, mcp__iajus__jurimetria_resultado, mcp__plugin_vadefocus-juris_iajus__jurimetria_resultado, mcp__iajus__jurimetria_lag_publicacao, mcp__plugin_vadefocus-juris_iajus__jurimetria_lag_publicacao, mcp__iajus__consultar_qualificada, mcp__plugin_vadefocus-juris_iajus__consultar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_vadefocus-juris_iajus__obter_versoes_qualificada, mcp__iajus__consultar_informativos_stf, mcp__plugin_vadefocus-juris_iajus__consultar_informativos_stf, mcp__iajus__consultar_informativos_stj, mcp__plugin_vadefocus-juris_iajus__consultar_informativos_stj, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa
+allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__buscar_semantica, mcp__iajus__buscar_hibrida, mcp__plugin_vadefocus-juris_iajus__buscar_hibrida, mcp__iajus__buscar_fts, mcp__plugin_vadefocus-juris_iajus__buscar_fts, mcp__iajus__buscar_regex, mcp__plugin_vadefocus-juris_iajus__buscar_regex, mcp__iajus__buscar_por_cnj, mcp__plugin_vadefocus-juris_iajus__buscar_por_cnj, mcp__iajus__buscar_por_ontologia, mcp__plugin_vadefocus-juris_iajus__buscar_por_ontologia, mcp__iajus__jurimetria_volume, mcp__plugin_vadefocus-juris_iajus__jurimetria_volume, mcp__iajus__jurimetria_relator, mcp__plugin_vadefocus-juris_iajus__jurimetria_relator, mcp__iajus__jurimetria_classe, mcp__plugin_vadefocus-juris_iajus__jurimetria_classe, mcp__iajus__jurimetria_orgao_julgador, mcp__plugin_vadefocus-juris_iajus__jurimetria_orgao_julgador, mcp__iajus__jurimetria_resultado, mcp__plugin_vadefocus-juris_iajus__jurimetria_resultado, mcp__iajus__jurimetria_lag_publicacao, mcp__plugin_vadefocus-juris_iajus__jurimetria_lag_publicacao, mcp__iajus__buscar_qualificada, mcp__plugin_vadefocus-juris_iajus__buscar_qualificada, mcp__iajus__obter_versoes_qualificada, mcp__plugin_vadefocus-juris_iajus__obter_versoes_qualificada, mcp__iajus__buscar_informativos_stf, mcp__plugin_vadefocus-juris_iajus__buscar_informativos_stf, mcp__iajus__buscar_informativos_stj, mcp__plugin_vadefocus-juris_iajus__buscar_informativos_stj, mcp__iajus__obter_unidade_completa, mcp__plugin_vadefocus-juris_iajus__obter_unidade_completa
 ---
 
 # Pesquisar jurisprudência brasileira
@@ -19,9 +19,9 @@ esse órgão e ofereça os que cobre — não tente contornar nem invente result
 
 Decida pela INTENÇÃO da pergunta, nesta ordem de verificação:
 
-1. O usuário deu o NÚMERO de uma súmula/SV/tema/OJ → `consultar_qualificada`. Se ele quiser
+1. O usuário deu o NÚMERO de uma súmula/SV/tema/OJ → `buscar_qualificada`. Se ele quiser
    saber se a redação MUDOU (histórico de versões/alterações), use `obter_versoes_qualificada`
-   com o `entity_id` que veio do hit da `consultar_qualificada`.
+   com o `entity_id` que veio do hit da `buscar_qualificada`.
 2. O usuário deu um número de processo CNJ → `buscar_por_cnj`.
 3. Pergunta conceitual/temática → `buscar_semantica`; se vier fraco, `buscar_hibrida`.
 4. Expressão técnica literal → `buscar_fts`; padrão de forma (regex) → `buscar_regex`.
@@ -35,14 +35,14 @@ Decida pela INTENÇÃO da pergunta, nesta ordem de verificação:
    (`jurimetria_volume` / `jurimetria_relator` / `jurimetria_classe` /
    `jurimetria_orgao_julgador` / `jurimetria_resultado` / `jurimetria_lag_publicacao`) — dão
    contagens EXATAS do read-model, com envelope de honestidade (ver "Jurimetria agregada").
-8. "O que saiu no informativo sobre X" → `consultar_informativos_stf` / `_stj`.
+8. "O que saiu no informativo sobre X" → `buscar_informativos_stf` / `_stj`.
 
 ## Ferramentas
 
 Todas são read-only e retornam o envelope `{modalidade, total, resultados: […]}`.
 Cada exemplo abaixo foi executado com sucesso contra o serviço em produção.
 
-### consultar_qualificada — súmula/SV/tema/OJ pelo número
+### buscar_qualificada — súmula/SV/tema/OJ pelo número
 
 Lookup estruturado exato. `numero` é obrigatório; `tipo` (`sumula`, `sv`, `tema`,
 `oj`, `pn`) e `orgao` (sigla, ex. `"STF"`) desambiguam. Zeros à esquerda e acentos
@@ -58,7 +58,7 @@ uma, avise o usuário da vigência.
 ### obter_versoes_qualificada — histórico de redações de uma qualificada
 
 Reader POR ID: dado o `entity_id` de uma qualificada (obtido de um hit da
-`consultar_qualificada`), devolve a **linha do tempo das redações** + os **eventos de
+`buscar_qualificada`), devolve a **linha do tempo das redações** + os **eventos de
 alteração**. Use quando o usuário perguntar se uma súmula/tese "mudou de redação", "foi
 alterada", "desde quando vale a redação atual" ou quiser a versão histórica.
 
@@ -70,11 +70,11 @@ e não há eventos, vem um `aviso` de que só a redação vigente/baseline está
 isso em vez de afirmar que nunca houve alteração.
 
 ```json
-{"entity_id": "<entity_id de um hit de consultar_qualificada>"}
+{"entity_id": "<entity_id de um hit de buscar_qualificada>"}
 ```
 
 Não enumera órgãos: o chamador já precisa ter o `entity_id` (que só sai de uma
-`consultar_qualificada` órgão-escopada), então é seguro citar a redação vigente e as anteriores.
+`buscar_qualificada` órgão-escopada), então é seguro citar a redação vigente e as anteriores.
 
 ### buscar_semantica — significado, não palavra
 
@@ -172,7 +172,7 @@ Regras de honestidade (obrigatório):
 - `aviso: "sem cobertura para o recorte"` = lacuna de ingestão/rollup, **não** volume zero no
   mundo real. Reporte `as_of` (data do snapshot) quando o número embasar uma afirmação.
 - Sem recorte (`orgao`/`ano`) a tool recusa com erro pedindo o recorte — não insista; peça-o
-  ao usuário. Rótulos de código de classe via `consultar_ontologia_juridica`.
+  ao usuário. Rótulos de código de classe via `obter_ontologia_juridica`.
 
 ```json
 {"orgao": "tjrj"}
@@ -204,7 +204,7 @@ Se você só tem o nome "humano" do relator (ex.: "Min. Luís Roberto Barroso"),
 a forma normalizada; depois reaproveite esse `relator_norm` nas modalidades de busca. O nome
 também aparece nos hits de `buscar_semantica`/`buscar_hibrida`.
 
-### consultar_informativos_stf / consultar_informativos_stj — informativos
+### buscar_informativos_stf / buscar_informativos_stj — informativos
 
 Entradas por tema dos informativos de jurisprudência (STF Informativos 690-1200+,
 STJ 511-888+). Parâmetros: `query`, `limite`.
@@ -248,7 +248,7 @@ trecho e `link_completo` — **nada de memória**).
 **Regras do levantamento:** (1) comece denso (`buscar_semantica`/`buscar_hibrida`) e cruze
 com `buscar_fts`/`buscar_regex`/`buscar_por_ontologia`; (2) **refine** reusando os termos
 que apareceram nos primeiros hits (relator, tese, dispositivo) até a cobertura estabilizar
-(rodadas sem resultado novo); (3) para a tese vinculante prefira `consultar_qualificada`;
+(rodadas sem resultado novo); (3) para a tese vinculante prefira `buscar_qualificada`;
 (4) ao consolidar, **deduplique** por `numero_processo`/`link_completo` e agrupe por tese;
 (5) feche com as **lacunas** (o que NÃO foi achado) para o solicitante saber o limite da
 cobertura. Esta skill alimenta **montar-apostila-didatica** e **gerar-questoes-concurso** —
@@ -275,5 +275,5 @@ quando o objetivo final for material de estudo ou questões, já entregue o doss
 - Inclua `tribunal`, `numero_processo` (ou `numero_processo_cnj`), `relator` e
   `data_julgamento` quando presentes; resuma a `ementa_snippet` em 1-2 frases.
 - Para "entendimento atual", prefira qualificadas (súmula/SV/tema) via
-  `consultar_qualificada` a um acórdão isolado.
+  `buscar_qualificada` a um acórdão isolado.
 - Preserve diacríticos e UTF-8 exatamente como na fonte.
