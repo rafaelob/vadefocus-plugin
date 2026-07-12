@@ -10,10 +10,14 @@ allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__
 
 O servidor indexa acórdãos colegiados, súmulas, precedentes qualificados e informativos
 dos órgãos do acervo VadeFocus: **STF, STJ, TSE, TRF1-6, os 27 TREs, TJ-RJ e TJ-MG**
-(2000-2026 - controle concentrado do STF desde 1988, TRF6 desde 2022; **TJ-RJ por ora só câmaras CÍVEIS - as criminais estão em
-coleta**), com classificação OJBU alinhada ao CNJ/TPU. Se o usuário
-pedir um órgão que não esteja nesta lista, diga com honestidade que o acervo não cobre
-esse órgão e ofereça os que cobre - não tente contornar nem invente resultado.
+(2000-2026 - controle concentrado do STF desde 1988, TRF6 desde 2022; **no TJ-RJ a matéria
+CÍVEL tem cobertura mais ampla e a CRIMINAL - Câmaras Criminais e Seção Criminal - segue
+em coleta, ainda parcial: rode a busca normalmente em qualquer matéria e só sinalize
+possível lacuna se voltar vazia/fraca, oferecendo então STJ/STF. Não afirme cobertura
+completa de nenhum órgão sem que o próprio resultado a sustente**), com classificação OJBU
+alinhada ao CNJ/TPU. Se o usuário pedir um órgão que não esteja nesta lista, diga com
+honestidade que o acervo não cobre esse órgão e ofereça os que cobre - não tente contornar
+nem invente resultado.
 
 ## Escolha da ferramenta
 

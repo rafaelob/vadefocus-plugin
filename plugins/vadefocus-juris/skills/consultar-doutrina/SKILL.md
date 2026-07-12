@@ -59,9 +59,12 @@ Notas de uso:
   - devolve `obra_titulo`, `section_title`, `breadcrumbs` e páginas (sujeito ao teto de
   direitos autorais; `anchor` é o nome certo do argumento, não `secao_anchor`/`unit_id`).
   Sem o anchor, dá para localizar por `obter_secao_doutrina(documento_id=…, titulo_secao="…")`
-  (se ambíguo, devolve `candidatos[]` com os anchors). Alternativa por unidade:
-  `obter_unidade_completa(unit_id=family_meta.unit_id, family="doutrina")`. **Não** chame
-  nenhuma das duas só com `entity_id` (não resolve) - cite pelo snippet + referência.
+  (se ambíguo, devolve `candidatos[]` com os anchors). `obter_secao_doutrina` também aceita
+  **`entity_id`** da obra no lugar de `documento_id` (informe UM dos dois) - mas sempre com
+  `anchor` OU `titulo_secao` junto; `entity_id` **sozinho**, sem seção, não resolve.
+  Alternativa por unidade:
+  `obter_unidade_completa(unit_id=family_meta.unit_id, family="doutrina")` (esta usa `unit_id`,
+  não `entity_id`). Na falta de ambos, cite pelo snippet + referência.
 - `buscar_semantica`/`buscar_hibrida` aceitam `space` (`premium` = gemini-2 hierárquico,
   o tier da doutrina) e `k` (1-100). Prefira `premium` para doutrina - o embedding é
   hierárquico (seção + breadcrumb), pensado para texto de manual.
@@ -100,11 +103,13 @@ busca retornar obra fora do catálogo, confie na busca - o catálogo é um snaps
 
 - Cite pelos campos que as tools **realmente devolvem**: `obter_secao_doutrina` retorna
   `autor`, `obra_titulo`, `section_title`, `breadcrumbs` e `page_start`/`page_end`; os hits de
-  busca trazem `family_meta.title`, `family_meta.unit_id`, `family_meta.ref_interna` e
-  `family_meta.external_uri` (o `breadcrumbs` vem **só** de `obter_secao_doutrina`, não dos hits).
-  **Monte a referência ABNT a partir desses campos** - `AUTOR. *Título*. seção, p. X` (ABNT NBR
-  6023). (A coluna `referencia_abnt` existe no banco, mas **NÃO é retornada** por nenhuma tool do
-  perfil VadeFocus - não a espere no output.)
+  busca trazem `family_meta.title`, `family_meta.unit_id`, `family_meta.ref_interna`,
+  `family_meta.external_uri` e - quando a obra tem esse dado no acervo - `family_meta.referencia_abnt`
+  (a referência ABNT já pronta) + `referencia_completa`/`pagina_secao` (o `breadcrumbs` vem **só**
+  de `obter_secao_doutrina`, não dos hits). **Se vier `referencia_abnt`, use-a**; ela costuma vir
+  **incompleta** (a fonte não traz local/editora/ano - ver abaixo), então complete os campos que
+  faltarem com os marcadores ABNT em vez de descartá-la. Quando não vier, **monte** a referência a
+  partir dos demais campos - `AUTOR. *Título*. seção, p. X` (ABNT NBR 6023).
 - **Atenção honesta:** a fonte (PDF) **não traz local, editora nem ano**, então a referência fica
   **incompleta** - use os marcadores ABNT `[S. l.]` (local), `[s. n.]` (editora) e `[20--?]` (ano).
   **Não invente** esses dados para "completar"; sinalize que a fonte não os informou. A lista das
@@ -128,7 +133,8 @@ busca retornar obra fora do catálogo, confie na busca - o catálogo é um snaps
   **pesquisar-jurisprudencia**) - um subagente por sub-tema/autor. Esta skill alimenta
   **montar-apostila-didatica** e **gerar-questoes-concurso**: quando o destino for material
   de estudo, já retorne `autor` + `obra_titulo` + seção (`breadcrumb`/`section_title`) + `page_start`
-  prontos - a referência ABNT é montada a partir desses campos (a tool não devolve uma string pronta).
+  prontos - use o `family_meta.referencia_abnt` do hit quando vier, e monte a referência a partir
+  desses campos quando não vier (a string pronta pode ou não acompanhar o hit).
 - Preserve diacríticos e UTF-8 exatamente como na fonte.
 - A chave `ik_*` é injetada pelo cliente MCP no header `Authorization: Bearer`
   (Claude Code: `userConfig`/keychain; Cowork: `managedMcpServers`; Codex:
