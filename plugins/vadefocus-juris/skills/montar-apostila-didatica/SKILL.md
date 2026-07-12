@@ -8,7 +8,7 @@ allowed-tools: mcp__iajus__buscar_semantica, mcp__plugin_vadefocus-juris_iajus__
 
 Produz uma **apostila de estudo** sobre um tema jurídico, consolidando fontes REAIS do
 acervo VadeFocus, e entrega o material em **HTML** (autocontido) e **PDF** (A4, pronto para
-imprimir). Esta skill ORQUESTRA as skills de busca — não inventa nada: cada afirmação
+imprimir). Esta skill ORQUESTRA as skills de busca - não inventa nada: cada afirmação
 substantiva vem de uma chamada ao MCP, com a fonte rastreável.
 
 ## Quando usar / não usar
@@ -26,18 +26,18 @@ Trate a apostila como um **levantamento** seguido de redação. Paralelize a pes
    esboce o sumário (5-9 seções): conceito → fundamento constitucional/legal → requisitos →
    jurisprudência consolidada → divergências → aplicação prática → súmulas/teses. Confirme o
    recorte com o usuário só se for ambíguo.
-2. **Pesquisar as fontes — em PARALELO, 1 subagente por eixo** (ver "Pesquisa em
+2. **Pesquisar as fontes - em PARALELO, 1 subagente por eixo** (ver "Pesquisa em
    profundidade" em **pesquisar-jurisprudencia**). Lance numa só leva:
    - **Legislação** (via **consultar-legislacao** / **consultar-legislacao-estadual**): o
      fundamento normativo vigente (artigos âncora), com `link_completo`.
    - **Jurisprudência** (via **pesquisar-jurisprudencia**): precedentes e qualificadas
      (`buscar_qualificada` para súmula/SV/tema), com `link_completo` e ementa.
    - **Doutrina** (via **consultar-doutrina**): o enquadramento conceitual + a `referencia_abnt`.
-   Cada subagente devolve um mini-dossiê com um **schema fixo** por achado — `{eixo,
+   Cada subagente devolve um mini-dossiê com um **schema fixo** por achado - `{eixo,
    consultas_feitas, registros_usados:[{tool, id, link_completo, trecho}], conflitos,
-   lacunas}` — para você consolidar sem perder procedência. **Dedup** por `link_completo` >
+   lacunas}` - para você consolidar sem perder procedência. **Dedup** por `link_completo` >
    número CNJ/acórdão > identidade lógica; em **conflito** (precedentes divergentes, súmula
-   superada), não escolha em silêncio — registre a divergência na seção própria. Agrupe por
+   superada), não escolha em silêncio - registre a divergência na seção própria. Agrupe por
    seção do sumário.
 3. **Redigir o conteúdo didático.** Para cada seção: explique o conceito em linguagem clara →
    ancore no dispositivo legal (citado inline com link) → ilustre com o precedente/súmula
@@ -45,7 +45,7 @@ Trate a apostila como um **levantamento** seguido de redação. Paralelize a pes
    final) → feche com um exemplo/quadro-resumo. Preserve diacríticos/UTF-8. Para a **linguagem
    jurídica** (frases curtas, ordem direta, registro formal, siglas CNJ) e para qualquer **modelo
    de peça/ementa** que a apostila precise exemplificar, aplique a skill **redigir-peca-juridica**.
-4. **Gerar HTML + PDF.** Monte o documento autocontido e renderize o PDF — ver
+4. **Gerar HTML + PDF.** Monte o documento autocontido e renderize o PDF - ver
    **`references/PRODUCAO_HTML_PDF.md`** (template, CSS de marca VadeFocus, WeasyPrint, A4).
 5. **Validar** com o checklist abaixo antes de entregar; informe os caminhos dos arquivos
    (`.html` e `.pdf`) e as lacunas (o que não foi achado no acervo).
@@ -59,12 +59,12 @@ Uma apostila SOTA não é um amontoado de ementas. Inclua, conforme o público:
 - **Quadros comparativos** para institutos que se confundem (ex.: prescrição × decadência;
   IRDR × IAC) e **boxes "não confundir"** com a pegadinha clássica.
 - **Progressão** do simples ao complexo; um **exemplo/caso** por seção.
-- **Divergências e evolução**: aponte súmula superada, tese pendente, controvérsia viva —
+- **Divergências e evolução**: aponte súmula superada, tese pendente, controvérsia viva -
   com as fontes dos dois lados.
 - Para público de **concurso**, feche seções com a **súmula/tese** que costuma cair e, se o
   usuário quiser treinar, ofereça acionar **gerar-questoes-concurso** sobre o mesmo tema.
 
-## Contrato de citação (obrigatório — preferência do usuário)
+## Contrato de citação (obrigatório - preferência do usuário)
 
 A apostila CITA tudo o que afirma, com esta regra exata por tipo de fonte:
 
@@ -77,7 +77,7 @@ A apostila CITA tudo o que afirma, com esta regra exata por tipo de fonte:
   autoral e não tem URL pública). No corpo, mencione autor/obra em texto comum; **liste a
   `referencia_abnt` completa apenas no final**, na seção "Referências" (ABNT NBR 6023).
 - **Só crie hyperlink quando houver link real retornado pela busca.** Sem `link_completo`,
-  cite em texto e sinalize a ausência — nunca fabrique URL.
+  cite em texto e sinalize a ausência - nunca fabrique URL.
 
 Detalhe da marcação (notas de rodapé numeradas para legislação/jurisprudência + lista de
 referências ABNT para doutrina): ver `references/PRODUCAO_HTML_PDF.md` › "Citações".
@@ -89,10 +89,10 @@ referências ABNT para doutrina): ver `references/PRODUCAO_HTML_PDF.md` › "Cit
 - **Ledger de procedência (FONTE-ÂNCORA).** Mantenha, durante a montagem, uma tabela que
   amarra cada afirmação substantiva à sua origem: `{tool, consulta, id_do_registro
   (_id_key/unit_id/numero), link_completo, trecho}`. **Um parágrafo cuja afirmação jurídica
-  não casa com um registro do ledger desta sessão é descartado ou reescrito** — não vai para
+  não casa com um registro do ledger desta sessão é descartado ou reescrito** - não vai para
   a apostila. (O ledger é interno; no documento final aparecem as citações + a seção de links.)
 - Se a busca não trouxer fonte para um ponto, **diga que não há cobertura** em vez de
-  preencher — uma apostila com lacuna honesta vale mais que uma com fonte inventada.
+  preencher - uma apostila com lacuna honesta vale mais que uma com fonte inventada.
 - Texto de lei = redação **vigente** (confirme; sinalize dispositivo revogado/alterado).
 - Súmula/tese: confira `status_vigencia` (cancelada/superada → avise).
 
@@ -108,10 +108,10 @@ referências ABNT para doutrina): ver `references/PRODUCAO_HTML_PDF.md` › "Cit
 
 ## Referências
 
-- `references/PRODUCAO_HTML_PDF.md` — template HTML autocontido + CSS de marca VadeFocus
+- `references/PRODUCAO_HTML_PDF.md` - template HTML autocontido + CSS de marca VadeFocus
   (tokens OKLCH, serifa, A4), conversão para PDF via WeasyPrint, e a marcação exata das
   citações (hyperlink inline p/ lei/jurisprudência; ABNT no final p/ doutrina).
 
-> A chave `ik_*` é injetada pelo cliente no header `Authorization: Bearer` (keychain) —
+> A chave `ik_*` é injetada pelo cliente no header `Authorization: Bearer` (keychain) -
 > **em 401, repita UMA vez** (cold-start); nunca exiba a chave. Respostas muito grandes:
 > use o `userConfig` `max_output_kb` e, no Claude Code, `MAX_MCP_OUTPUT_TOKENS`.

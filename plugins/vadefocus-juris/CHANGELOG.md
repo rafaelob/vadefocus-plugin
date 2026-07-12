@@ -1,8 +1,8 @@
-# Changelog — vadefocus (plugin publico)
+# Changelog - vadefocus (plugin publico)
 
 Formato baseado em [Keep a Changelog](https://keepachangelog.com/); versionamento [SemVer](https://semver.org/).
 
-## [2.0.0] — 2026-07-10
+## [2.0.0] - 2026-07-10
 
 Corte MCP v3: renomeacao da superficie de tools para o vocabulario final (``buscar_*`` busca ranqueada, ``obter_*`` fetch de um recurso, ``listar_*`` enumeracao, ``jurimetria_*`` agregados). Bump MAJOR porque nomes de tool mudam (quebra clientes que chamavam os nomes antigos). Contagem final de tools por perfil: iajus 34 · vadefocus 32.
 

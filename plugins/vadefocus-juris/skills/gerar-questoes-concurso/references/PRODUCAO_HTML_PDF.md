@@ -20,7 +20,7 @@ identidade visual VadeFocus e o contrato de citação do usuário. Mesmo padrão
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{TÍTULO DO MATERIAL} — VadeFocus</title>
+<title>{TÍTULO DO MATERIAL} - VadeFocus</title>
 <style>/* ↓ ver "CSS de marca" */</style>
 </head>
 <body>
@@ -39,7 +39,7 @@ identidade visual VadeFocus e o contrato de citação do usuário. Mesmo padrão
     <!-- Lei + jurisprudência: cada nota repete a referência curta + a URL POR EXTENSO
          (clicável no HTML, legível no PDF impresso). Uma nota por citação inline. -->
     <ol>
-      <li id="n1">{ref curta da lei/acórdão} — {URL oficial (link_completo) por extenso}</li>
+      <li id="n1">{ref curta da lei/acórdão} - {URL oficial (link_completo) por extenso}</li>
     </ol>
   </section>
   <section id="referencias" class="referencias">
@@ -88,7 +88,7 @@ table{ border-collapse:collapse; width:100%; } th,td{ border:1px solid var(--acc
 ## Citações (o contrato do usuário, exato)
 
 - **Lei e jurisprudência = hyperlink inline** no texto âncora, apontando para `link_completo`,
-  **+ nota numerada OBRIGATÓRIA** com a URL por extenso (o PDF impresso perde o clique — a URL
+  **+ nota numerada OBRIGATÓRIA** com a URL por extenso (o PDF impresso perde o clique - a URL
   visível é o que torna a citação verificável no papel):
   ```html
   Conforme o <a href="{link_lei}">art. 927 do Código Civil</a><sup class="nota"><a href="#n1">1</a></sup>, …
@@ -100,8 +100,8 @@ table{ border-collapse:collapse; width:100%; } th,td{ border:1px solid var(--acc
 - **Doutrina = SEM link inline e SEM nota de URL.** No corpo, cite autor/obra em texto comum
   ("como ensina Fulano, …"); a **referência ABNT** entra **só** na seção `#referencias` no final,
   **montada a partir dos campos que a tool devolve** (`autor`, `obra_titulo`, `section_title`,
-  `page_start`) — nenhuma tool do perfil retorna uma string ABNT pronta. A fonte (PDF) não traz
-  local/editora/ano: mantenha os marcadores ABNT (`[S. l.]`, `[s. n.]`, `[20--?]`) — não invente.
+  `page_start`) - nenhuma tool do perfil retorna uma string ABNT pronta. A fonte (PDF) não traz
+  local/editora/ano: mantenha os marcadores ABNT (`[S. l.]`, `[s. n.]`, `[20--?]`) - não invente.
 - **Nunca crie hyperlink sem `link_completo` real.** Sem link, cite em texto e siga. Antes de
   fechar, **verifique**: todo `href` aponta para uma URL `http(s)` real retornada por uma busca
   (zero `#`/placeholder/`example.com`); nenhuma `<a href>` envolve doutrina.
@@ -123,7 +123,7 @@ uv run --with weasyprint python -c "from weasyprint import HTML; HTML('material.
 ## Ferramentas do host (não-MCP) + fail-closed
 
 Escrever o `.html` e renderizar o `.pdf` usa as ferramentas do **próprio cliente** (escrita de
-arquivo + shell/renderizador) — elas **não** entram no `allowed-tools` da skill (que pré-aprova
+arquivo + shell/renderizador) - elas **não** entram no `allowed-tools` da skill (que pré-aprova
 só as tools MCP de busca; o `allowed-tools` não bloqueia as ferramentas nativas do host). Se o
 host estiver com permissões restritas e **não** puder escrever arquivo nem renderizar PDF,
 **não falhe em silêncio**: entregue o conteúdo como HTML inline na resposta, gere o PDF assim

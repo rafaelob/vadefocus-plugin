@@ -3,7 +3,7 @@
 Fonte: **Recomendação CNJ nº 154/2024** (Manual de Padronização de Ementas do CNJ) e
 **Lei Complementar nº 95/1998, art. 11** (técnica legislativa). Esta referência é o oráculo
 de FORMA. O **conteúdo** (lei, súmula, tese, precedente, doutrina) vem sempre de uma chamada
-ao MCP VadeFocus — nunca de memória.
+ao MCP VadeFocus - nunca de memória.
 
 ---
 
@@ -13,7 +13,7 @@ A ementa-padrão serve a três objetivos do CNJ: (a) ajudar pessoas a **compreen
 (b) permitir a **aplicação adequada de precedentes** (no Brasil são fonte formal do direito);
 (c) facilitar o **uso de IA** (formato uniforme = recuperação melhor). O CPC não lista a ementa
 entre os elementos essenciais da sentença (art. 489), mas ela tornou-se o cartão de visita do
-julgado — deve sintetizar as ideias centrais em linguagem direta e acessível.
+julgado - deve sintetizar as ideias centrais em linguagem direta e acessível.
 
 ---
 
@@ -75,7 +75,7 @@ Jurisprudência relevante citada: STF, RE 878.694, Rel. Min. Luís Roberto Barro
 ### IV. DISPOSITIVO E TESE
 
 - Conclusão do julgamento. Use "provimento/desprovimento do recurso" ou
-  "procedência/improcedência do pedido" — **não** "provimento/desprovimento da ação".
+  "procedência/improcedência do pedido" - **não** "provimento/desprovimento da ação".
 - `Tese de julgamento` (subtítulo em itálico, dois pontos): frases objetivas, entre aspas,
   cardinais quando houver mais de uma.
 
@@ -117,7 +117,7 @@ Jurisprudência relevante citada: STF, RE 878.694, Rel. Min. Luís Roberto Barro
 
 ---
 
-## 4. Exemplo real (STJ, HC 598.886 — reconhecimento de pessoas)
+## 4. Exemplo real (STJ, HC 598.886 - reconhecimento de pessoas)
 
 ```
 SUPERIOR TRIBUNAL DE JUSTIÇA
@@ -187,6 +187,6 @@ qualquer texto jurídico:
 Topo: **CF/1988** + emendas + ADCT; tratados de direitos humanos com rito do art. 5º, §3º
 equivalem a emenda; demais tratados de DH = supralegais; espécies do **art. 59** (LC, LO, LD, MP,
 decreto legislativo, resolução); **atos infralegais** (decreto, portaria) subordinados à lei
-(legalidade — art. 84, IV). Conflito no mesmo nível: **especialidade** e **cronologia** (LINDB,
+(legalidade - art. 84, IV). Conflito no mesmo nível: **especialidade** e **cronologia** (LINDB,
 art. 2º). Vinculação: **súmula vinculante** (CF art. 103-A; Lei 11.417/2006) e **precedentes
-obrigatórios** (CPC art. 927) não criam novo nível — vinculam a interpretação.
+obrigatórios** (CPC art. 927) não criam novo nível - vinculam a interpretação.
